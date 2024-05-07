@@ -1,12 +1,33 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import AppModal from "./AppModal.vue";
+import { ref, watch } from "vue";
+
+const isOpenModal = ref(false);
+const modalType = ref("로그인");
 
 const navigateMain = () => {
   window.location.href = "/";
 };
+
+const openModal = type => {
+  isOpenModal.value = true;
+  modalType.value = type;
+};
+
+const closeModal = () => {
+  isOpenModal.value = false;
+  modalType.value = "로그인";
+};
+
+watch(isOpenModal, () => {
+  if (isOpenModal.value) document.body.style.overflow = "hidden";
+  else document.body.style.overflow = "auto";
+});
 </script>
 
 <template>
+  <AppModal v-if="isOpenModal" :modal-type="modalType" @close-modal="closeModal" />
   <header class="bg-white border-bottom">
     <main class="border-bottom">
       <div class="inner">
@@ -16,8 +37,8 @@ const navigateMain = () => {
           <span class="reg">배리어프리 여행 사이트</span>
         </div>
         <div class="user">
-          <p>로그인</p>
-          <p>회원가입</p>
+          <p @click="openModal('로그인')">로그인</p>
+          <p @click="openModal('회원가입')">회원가입</p>
         </div>
       </div>
     </main>
@@ -38,7 +59,7 @@ header {
   left: 0;
   width: 100%;
   height: 135px;
-  z-index: 100;
+  z-index: 10;
 }
 
 main {
