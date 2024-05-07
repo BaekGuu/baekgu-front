@@ -7,7 +7,7 @@ const navigateMain = () => {
 </script>
 
 <template>
-  <header class="bg-white">
+  <header class="bg-white border-bottom">
     <main class="border-bottom">
       <div class="inner">
         <div class="logo" @click="navigateMain">
@@ -21,7 +21,7 @@ const navigateMain = () => {
         </div>
       </div>
     </main>
-    <nav class="border-bottom">
+    <nav>
       <div class="inner">
         <RouterLink to="/" active-class="active">백구는요,</RouterLink>
         <RouterLink to="/search" active-class="active">여행지 검색</RouterLink>
@@ -37,7 +37,8 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  height: 15vh;
+  height: 135px;
+  z-index: 100;
 }
 
 main {
