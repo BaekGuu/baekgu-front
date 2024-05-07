@@ -49,6 +49,10 @@ a:visited {
   color: #212121;
 }
 
+.border-bottom {
+  border-bottom: 1px solid #e8e8e8;
+}
+
 .light {
   font-family: "Freesentation-3Light";
 }
