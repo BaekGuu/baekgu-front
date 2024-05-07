@@ -1,9 +1,11 @@
 <script setup>
-defineProps({ text: String, isActive: Boolean });
+defineProps({ text: String, width: Number, isActive: Boolean });
 </script>
 
 <template>
-  <button :class="isActive ? 'bg-point' : 'disabled'">{{ text }}</button>
+  <button :class="isActive ? 'bg-point' : 'disabled'" :style="{ width: width + '%' }">
+    {{ text }}
+  </button>
 </template>
 
 <style scoped>
@@ -12,7 +14,7 @@ button {
   outline: none;
   border: none;
   border-radius: 15px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: white;
 }
 .disabled {
