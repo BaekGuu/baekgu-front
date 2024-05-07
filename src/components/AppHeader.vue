@@ -7,9 +7,9 @@ const navigateMain = () => {
 </script>
 
 <template>
-  <header class="border-bottom">
+  <header class="bg-white">
     <main class="border-bottom">
-      <div class="top">
+      <div class="inner">
         <div class="logo" @click="navigateMain">
           <img src="../assets/img/백구로고.png" />
           <span class="title extrabold">백구</span>
@@ -21,27 +21,35 @@ const navigateMain = () => {
         </div>
       </div>
     </main>
-    <nav>
-      <RouterLink to="/" active-class="active">백구는요,</RouterLink>
-      <RouterLink to="/search" active-class="active">여행지 검색</RouterLink>
-      <RouterLink to="/board" active-class="active">게시판</RouterLink>
+    <nav class="border-bottom">
+      <div class="inner">
+        <RouterLink to="/" active-class="active">백구는요,</RouterLink>
+        <RouterLink to="/search" active-class="active">여행지 검색</RouterLink>
+        <RouterLink to="/board" active-class="active">게시판</RouterLink>
+      </div>
     </nav>
   </header>
-  <hr />
 </template>
 
 <style scoped>
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 15vh;
+}
+
 main {
   width: 100%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.top {
-  width: 80%;
-  margin: auto;
+
+main div {
   display: flex;
-  align-items: center;
 }
+
 .logo {
   width: 80%;
   display: flex;
@@ -49,12 +57,15 @@ main {
   gap: 0.5rem;
   cursor: pointer;
 }
+
 img {
   width: 50px;
 }
+
 .title {
   font-size: 1.5rem;
 }
+
 .user {
   width: 20%;
   display: flex;
@@ -62,21 +73,29 @@ img {
   justify-content: end;
   gap: 1rem;
 }
+
 .user p {
   cursor: pointer;
   margin: 0;
 }
+
 nav {
-  width: 80%;
-  margin: auto;
   display: flex;
   gap: 2.5rem;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+
+nav div {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
 nav a {
   font-size: 1.2rem;
 }
+
 nav a.active {
   font-weight: 700;
   color: #ff747c;
