@@ -33,7 +33,6 @@
 body {
   margin: 0;
   padding: 0;
-  width: 100vw;
 }
 
 #app {
@@ -47,6 +46,11 @@ a {
 
 a:visited {
   color: #212121;
+}
+
+.inner {
+  width: 80%;
+  margin: auto;
 }
 
 .border-bottom {
