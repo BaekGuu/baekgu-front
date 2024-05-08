@@ -3,7 +3,7 @@ defineProps({ text: String, width: Number, isActive: Boolean });
 </script>
 
 <template>
-  <button :class="isActive ? 'bg-point' : 'disabled'" :style="{ width: width + '%' }">
+  <button type="button" :class="isActive ? 'bg-point' : 'disabled'" :style="{ width: width + '%' }">
     {{ text }}
   </button>
 </template>
@@ -14,9 +14,10 @@ button {
   outline: none;
   border: none;
   border-radius: 15px;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: white;
 }
+
 .disabled {
   background-color: #d9d9d9;
 }
