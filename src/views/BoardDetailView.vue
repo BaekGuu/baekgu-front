@@ -2,6 +2,7 @@
 import BaseButton from "@/components/BaseButton.vue";
 import { ref } from "vue";
 const username = ref("람라미");
+
 const board = ref({
   id: 10,
   title: "대전 빵집 투어",
@@ -11,29 +12,47 @@ const board = ref({
   regist_date: "2024-05-07",
 });
 
-const navigateToList = () => {
-  window.location.href = "/board";
-};
+const pageType = ref(window.location.pathname.split("/board/")[1]);
 </script>
 
 <template>
   <main class="page">
     <div class="banner bg-assistant">
-      <p class="inner">
+      <p class="inner" v-if="pageType !== 'regist'">
         재밌게 보셨다면, 더 많은 사람들이 여행 경험을 공유할 수 있도록 새로운 글을 작성해 주세요.
       </p>
+      <p class="inner" v-else>나의 여행 경험을 사용자들과 공유해 보세요.</p>
     </div>
     <form class="inner">
       <div style="align-items: center">
         <label for="title">제목</label>
-        <input type="text" name="title" id="title" :value="board.title" disabled />
+        <input
+          type="text"
+          name="title"
+          id="title"
+          v-if="pageType !== 'regist'"
+          :value="board.title"
+          disabled
+        />
+        <input v-else type="text" name="title" id="title" />
       </div>
       <span style="text-align: end; width: 100%" class="bold">✍작성자: {{ username }}</span>
       <div style="align-items: start">
         <label for="content">내용</label>
-        <textarea name="content" id="content" rows="20" :value="board.content" disabled></textarea>
+        <textarea
+          name="content"
+          id="content"
+          rows="20"
+          v-if="pageType !== 'regist'"
+          :value="board.content"
+          disabled
+        ></textarea>
+        <textarea name="content" id="content" rows="20" v-else></textarea>
       </div>
-      <BaseButton :is-active="true" text="목록 보기" :width="20" :on-click="navigateToList" />
+      <RouterLink to="/board" style="width: 20%; height: 100%;">
+        <BaseButton :is-active="true" :width="100" v-if="pageType !== 'regist'" text="목록 보기" />
+        <BaseButton :is-active="true" :width="100" v-else text="저장" />
+      </RouterLink>
     </form>
   </main>
 </template>
@@ -61,7 +80,7 @@ form div {
 }
 
 input:disabled,
-textarea {
+textarea:disabled {
   color: #212121;
   background-color: #fff;
   border: none;
@@ -76,7 +95,7 @@ textarea {
   width: 80%;
 }
 
-button {
+a {
   margin-top: 1rem;
   align-self: end;
 }
