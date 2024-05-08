@@ -1,29 +1,22 @@
 <script setup>
+import { axiosClient } from "@/api/axios";
 import BaseButton from "@/components/BaseButton.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const pages = ref(10);
 const currentPage = ref(1);
+const datas = ref([]);
 
-const datas = ref([
-  { id: 0, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 1, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 3, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 4, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 5, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 6, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 7, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 8, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 9, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-  { id: 10, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
-]);
-
-const navigateToDetail = id => {
-  window.location.href = `/board/${id}`;
-};
+onMounted(async () => {
+  datas.value = await axiosClient.get("/board/list");
+});
 
 const handleClickPageNum = pageNum => {
   currentPage.value = pageNum;
+};
+
+const navigateToDetail = id => {
+  window.location.href = "/board/" + id;
 };
 </script>
 
@@ -34,10 +27,17 @@ const handleClickPageNum = pageNum => {
         <input type="text" placeholder="검색하고 싶은 제목 또는 내용을 입력하세요." />
         <BaseButton text="검색" :width="15" :is-active="true" />
       </div>
-      <p style="margin-top: 0.8rem; margin-bottom: 0.8rem">
-        총 <span class="primary bold">{{ datas.length }}</span
-        >건
-      </p>
+      <div
+        style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: end"
+      >
+        <p style="margin: 0">
+          총 <span class="primary bold">{{ datas.length }}</span
+          >건
+        </p>
+        <RouterLink to="/board/regist" style="width: 10%; height: 100%">
+          <BaseButton :is-active="true" :width="100" text="글쓰기" />
+        </RouterLink>
+      </div>
       <table>
         <thead>
           <th>ID</th>
@@ -46,11 +46,11 @@ const handleClickPageNum = pageNum => {
           <th>작성 날짜</th>
         </thead>
         <tbody>
-          <tr v-for="data in datas" :key="data.id" @click="navigateToDetail(data.id)">
-            <td>{{ data.id }}</td>
+          <tr v-for="data in datas" :key="data.boardId" @click="navigateToDetail(data.id)">
+            <td>{{ data.boardId }}</td>
             <td>{{ data.title }}</td>
-            <td>{{ data.writer }}</td>
-            <td>{{ data.regist_date }}</td>
+            <td>{{ data.writerId }}</td>
+            <td>{{ data.writingTime }}</td>
           </tr>
         </tbody>
       </table>

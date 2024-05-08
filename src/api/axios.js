@@ -1,11 +1,11 @@
 import axios from "axios";
 
-export class AxiosClient {
+class AxiosClient {
   #baseUrl;
   #instance;
 
-  constructor(url) {
-    this.#baseUrl = url;
+  constructor() {
+    this.#baseUrl = "http://192.168.120.76:8080";
 
     this.#instance = axios.create({
       baseURL: this.#baseUrl,
@@ -14,12 +14,7 @@ export class AxiosClient {
   }
 
   get(query) {
-    let data;
-    this.#instance
-      .get(this.#baseUrl + query)
-      .then(res => (data = res.data))
-      .catch(error => (data = error));
-    return data;
+    return this.#instance.get(this.#baseUrl + query).then(res => {return res.data});
   }
 
   post(query) {
@@ -31,3 +26,5 @@ export class AxiosClient {
     return result;
   }
 }
+
+export const axiosClient = new AxiosClient();
