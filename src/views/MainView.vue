@@ -27,7 +27,7 @@ p {
 }
 
 .baekgu-info {
-  padding: 1rem;
+  padding: 3rem 0;
   display: flex;
   justify-content: space-between;
 }
