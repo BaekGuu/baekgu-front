@@ -56,6 +56,10 @@ a:visited {
   color: #212121;
 }
 
+button {
+  cursor: pointer;
+}
+
 input[type="text"], input[type="password"] {
   padding: 0.8rem 1rem;
   outline: none;
