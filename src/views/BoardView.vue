@@ -71,34 +71,42 @@ const handleClickPageNum = pageNum => {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
+
 .search input {
-  width: 80%;
+  width: 75%;
 }
+
 table {
   width: 100%;
   text-align: center;
   border-collapse: collapse;
   font-size: 1.2rem;
 }
+
 thead {
   border-top: 0.5px solid #aaa;
   border-bottom: 0.5px solid #aaa;
 }
+
 th:first-child {
   border-left: none;
 }
+
 th:last-child {
   border-right: none;
 }
+
 th {
   border-left: 0.3px solid #aaa;
   border-right: 0.3px solid #aaa;
   padding: 1rem;
 }
+
 tr {
   border-top: 0.5px solid #aaa;
   border-bottom: 0.5px solid #aaa;
 }
+
 td {
   padding: 1rem;
 }
@@ -108,6 +116,7 @@ td {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
+
 .paging span {
   font-size: 1.2rem;
   margin-left: 0.5rem;
