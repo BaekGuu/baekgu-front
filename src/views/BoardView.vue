@@ -55,7 +55,7 @@ const handleClickPageNum = pageNum => {
           v-for="page in pages"
           :key="page"
           :class="currentPage === page ? 'primary bold' : ''"
-          style="cursor: pointer;"
+          style="cursor: pointer"
           @click="handleClickPageNum(page)"
           >{{ page }}</span
         >
