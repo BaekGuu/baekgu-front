@@ -12,8 +12,10 @@ import BaseButton from "../BaseButton.vue";
       <input type="text" placeholder="아이디" />
       <BaseButton text="중복확인" :isActive="true"></BaseButton>
     </div>
-    <input type="text" placeholder="비밀번호" /><input type="text" placeholder="비밀번호 확인" />
-    <span></span> <input type="text" placeholder="이메일" />
+    <input type="password" placeholder="비밀번호" />
+    <input type="password" placeholder="비밀번호 확인" />
+    <span>{{}}</span>
+    <input type="text" placeholder="이메일" />
     <BaseButton text="회원가입" :isActive="false" />
   </form>
 </template>
