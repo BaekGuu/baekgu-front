@@ -61,12 +61,18 @@ button {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+textarea {
   padding: 0.8rem 1rem;
   outline: none;
   border: 0.5px solid #606060;
   border-radius: 15px;
   font-size: 1rem;
+  font-family: "Freesentation-4Regular";
+}
+
+textarea {
+  resize: none;
 }
 
 .inner {

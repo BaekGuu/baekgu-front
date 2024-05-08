@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import BoardListView from "@/views/BoardListView.vue";
 import MainView from "@/views/MainView.vue";
 import SearchView from "@/views/SearchView.vue";
+import BoardDetailView from "@/views/BoardDetailView.vue";
 
 const router = createRouter({
   linkActiveClass: "active",
@@ -21,6 +22,11 @@ const router = createRouter({
       path: "/board",
       name: "board",
       component: BoardListView,
+    },
+    {
+      path: "/board/:id",
+      name: "detail",
+      component: BoardDetailView,
     },
   ],
 });

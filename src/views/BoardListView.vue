@@ -18,6 +18,10 @@ const datas = ref([
   { id: 10, title: "대전 빵집 투어", writer: "하람", regist_date: "2024-05-07" },
 ]);
 
+const navigateToDetail = id => {
+  window.location.href = `/board/${id}`;
+};
+
 const handleClickPageNum = pageNum => {
   currentPage.value = pageNum;
 };
@@ -28,7 +32,7 @@ const handleClickPageNum = pageNum => {
     <div class="inner">
       <div class="search">
         <input type="text" placeholder="검색하고 싶은 제목 또는 내용을 입력하세요." />
-        <BaseButton text="검색" width="15" :is-active="true" />
+        <BaseButton text="검색" :width="15" :is-active="true" />
       </div>
       <p style="margin-top: 0.8rem; margin-bottom: 0.8rem">
         총 <span class="primary bold">{{ datas.length }}</span
@@ -42,7 +46,7 @@ const handleClickPageNum = pageNum => {
           <th>작성 날짜</th>
         </thead>
         <tbody>
-          <tr v-for="data in datas" :key="data.id">
+          <tr v-for="data in datas" :key="data.id" @click="navigateToDetail(data.id)">
             <td>{{ data.id }}</td>
             <td>{{ data.title }}</td>
             <td>{{ data.writer }}</td>

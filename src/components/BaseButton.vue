@@ -1,9 +1,14 @@
 <script setup>
-defineProps({ text: String, width: Number, isActive: Boolean });
+defineProps({ text: String, width: Number, isActive: Boolean, onClick: Function });
 </script>
 
 <template>
-  <button type="button" :class="isActive ? 'bg-point' : 'disabled'" :style="{ width: width + '%' }">
+  <button
+    type="button"
+    :class="isActive ? 'bg-point' : 'disabled'"
+    :style="{ width: width + '%' }"
+    @click="onClick"
+  >
     {{ text }}
   </button>
 </template>
