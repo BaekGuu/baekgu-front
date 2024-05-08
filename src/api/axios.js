@@ -13,17 +13,16 @@ class AxiosClient {
     });
   }
 
-  get(query) {
-    return this.#instance.get(this.#baseUrl + query).then(res => {return res.data});
+  async get(query) {
+    return this.#instance.get(this.#baseUrl + query).then(res => {
+      return res.data;
+    });
   }
 
-  post(query) {
-    let result;
-    this.#instance
-      .post(this.#baseUrl + query)
-      .then(res => (result = res.status))
-      .catch(error => (result = error));
-    return result;
+  async post(query, data) {
+    return this.#instance.post(this.#baseUrl + query, data).then(res => {
+      return res.status;
+    });
   }
 }
 

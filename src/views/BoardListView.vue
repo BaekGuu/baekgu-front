@@ -46,7 +46,7 @@ const navigateToDetail = id => {
           <th>작성 날짜</th>
         </thead>
         <tbody>
-          <tr v-for="data in datas" :key="data.boardId" @click="navigateToDetail(data.id)">
+          <tr v-for="data in datas" :key="data.boardId" @click="navigateToDetail(data.boardId)">
             <td>{{ data.boardId }}</td>
             <td>{{ data.title }}</td>
             <td>{{ data.writerId }}</td>

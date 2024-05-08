@@ -1,58 +1,83 @@
 <script setup>
+import { axiosClient } from "@/api/axios";
 import BaseButton from "@/components/BaseButton.vue";
-import { ref } from "vue";
-const username = ref("람라미");
+import { OK } from "@/constant/status";
+import { onMounted, ref } from "vue";
 
 const board = ref({
-  id: 10,
-  title: "대전 빵집 투어",
-  writer: "하람",
-  content:
-    "일단 성심당은 유명한만큼 맛있었어요 저는 기대 이상으로 만족합니다!\n의외로 맛있었던 곳은 유성구 쪽에 “파이룸”!!!\n꼭 가보세요!!!🤤",
-  regist_date: "2024-05-07",
+  boardId: Number,
+  content: "",
+  title: "",
+  writerId: "",
+  writingTime: "",
 });
 
-const pageType = ref(window.location.pathname.split("/board/")[1]);
+const query = ref(window.location.pathname.split("/board/")[1]);
+
+onMounted(async () => {
+  if (query.value !== "regist") board.value = await axiosClient.get("/board/" + query.value);
+});
+
+const navigateToList = () => {
+  window.location.href = "/board";
+};
+
+const handleSubmit = async () => {
+  let requestBody = {
+    title: document.querySelector('input[name="title"]').value,
+    writerId: document.querySelector('input[name="writerId"]').value,
+    content: document.querySelector('textarea[name="content"]').value,
+  };
+  let status = await axiosClient.post("/board/regist", requestBody);
+  if (status === OK) window.location.href = "/board";
+};
 </script>
 
 <template>
   <main class="page">
     <div class="banner bg-assistant">
-      <p class="inner" v-if="pageType !== 'regist'">
+      <p v-if="query !== 'regist'" class="inner">
         재밌게 보셨다면, 더 많은 사람들이 여행 경험을 공유할 수 있도록 새로운 글을 작성해 주세요.
       </p>
-      <p class="inner" v-else>나의 여행 경험을 사용자들과 공유해 보세요.</p>
+      <p v-else class="inner">나의 여행 경험을 사용자들과 공유해 보세요.</p>
     </div>
-    <form class="inner">
+    <form class="inner" @submit.prevent="handleSubmit" id="form">
       <div style="align-items: center">
         <label for="title">제목</label>
         <input
+          v-if="query !== 'regist'"
           type="text"
           name="title"
           id="title"
-          v-if="pageType !== 'regist'"
           :value="board.title"
           disabled
         />
         <input v-else type="text" name="title" id="title" />
       </div>
-      <span style="text-align: end; width: 100%" class="bold">✍작성자: {{ username }}</span>
+      <input type="hidden" name="writerId" value="haram" />
+      <span style="text-align: end; width: 100%" class="bold"
+        >✍작성자: {{ query === "regist" ? "람라미" : board.writerId }}</span
+      >
       <div style="align-items: start">
         <label for="content">내용</label>
         <textarea
+          v-if="query !== 'regist'"
           name="content"
           id="content"
           rows="20"
-          v-if="pageType !== 'regist'"
           :value="board.content"
           disabled
         ></textarea>
-        <textarea name="content" id="content" rows="20" v-else></textarea>
+        <textarea v-else name="content" id="content" rows="20"></textarea>
       </div>
-      <RouterLink to="/board" style="width: 20%; height: 100%;">
-        <BaseButton :is-active="true" :width="100" v-if="pageType !== 'regist'" text="목록 보기" />
-        <BaseButton :is-active="true" :width="100" v-else text="저장" />
-      </RouterLink>
+      <BaseButton
+        v-if="query !== 'regist'"
+        :is-active="true"
+        :width="20"
+        text="목록 보기"
+        :on-click="navigateToList"
+      />
+      <BaseButton v-else :is-active="true" :width="20" text="저장" :type="'submit'" />
     </form>
   </main>
 </template>
@@ -95,7 +120,7 @@ textarea {
   width: 80%;
 }
 
-a {
+button {
   margin-top: 1rem;
   align-self: end;
 }

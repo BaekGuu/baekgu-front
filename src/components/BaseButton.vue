@@ -1,10 +1,10 @@
 <script setup>
-defineProps({ text: String, width: Number, isActive: Boolean, onClick: Function });
+defineProps({ type: String, text: String, width: Number, isActive: Boolean, onClick: Function });
 </script>
 
 <template>
   <button
-    type="button"
+    :type="type === 'submit' ? 'submit' : 'button'"
     :class="isActive ? 'bg-point' : 'disabled'"
     :style="{ width: width + '%' }"
     @click="onClick"
