@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import BoardView from "@/views/BoardView.vue";
+import BoardListView from "@/views/BoardListView.vue";
 import MainView from "@/views/MainView.vue";
 import SearchView from "@/views/SearchView.vue";
 
@@ -20,7 +20,7 @@ const router = createRouter({
     {
       path: "/board",
       name: "board",
-      component: BoardView,
+      component: BoardListView,
     },
   ],
 });
