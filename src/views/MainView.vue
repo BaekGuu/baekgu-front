@@ -13,7 +13,7 @@
           </p>
           <p>우리네 토종 강아지 진돗개 백구와 함께 아무런 걱정 없이 여행을 떠나보세요!</p>
         </div>
-        <img src="../assets/img/baekgu_bark.svg" alt="" />
+        <img src="../assets/img/baekgu_bark.svg" alt="백구이미지" class="baekgu-bark" />
       </div>
     </div>
   </main>
@@ -30,5 +30,10 @@ p {
   padding: 3rem 0;
   display: flex;
   justify-content: space-between;
+}
+
+.baekgu-bark {
+  position: relative;
+  bottom: -3rem;
 }
 </style>
