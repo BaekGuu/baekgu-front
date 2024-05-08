@@ -6,7 +6,7 @@ import BaseButton from "../BaseButton.vue";
   <form action="">
     <input type="text" placeholder="아이디" />
     <input type="password" placeholder="비밀번호" />
-    <BaseButton text="로그인" :is-active="true" />
+    <BaseButton text="로그인" :is-active="true" :width="100" />
     <div class="social">
       <img src="../../assets/img/kakao_login.svg" alt="카카오로그인" />
       <img src="../../assets/img/naver_login.svg" alt="네이버로그인" />
