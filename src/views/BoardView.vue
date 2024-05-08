@@ -105,6 +105,11 @@ th {
 tr {
   border-top: 0.5px solid #aaa;
   border-bottom: 0.5px solid #aaa;
+  cursor: pointer;
+}
+
+tr:hover {
+  background-color: #efefef;
 }
 
 td {

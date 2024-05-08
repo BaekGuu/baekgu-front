@@ -60,7 +60,8 @@ button {
   cursor: pointer;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   padding: 0.8rem 1rem;
   outline: none;
   border: 0.5px solid #606060;
@@ -80,9 +81,11 @@ input[type="text"], input[type="password"] {
 .light {
   font-family: "Freesentation-3Light";
 }
+
 .reg {
   font-family: "Freesentation-4Regular";
 }
+
 .bold {
   font-family: "Freesentation-7Bold";
 }
