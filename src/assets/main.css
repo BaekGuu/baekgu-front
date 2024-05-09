@@ -147,3 +147,7 @@ textarea {
 .bg-black {
   background-color: #212121;
 }
+
+.hover:hover {
+  color: #7aa2ce;
+}

@@ -2,9 +2,13 @@
 import { RouterLink } from "vue-router";
 import AppModal from "./AppModal.vue";
 import { ref, watch } from "vue";
+import { getCookie } from "@/util/cookies";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 
 const isOpenModal = ref(false);
+const isOpenUserSection = ref(false);
 const modalType = ref("로그인");
+const username = ref(getCookie("username"));
 
 const navigateMain = () => {
   window.location.href = "/";
@@ -24,6 +28,27 @@ watch(isOpenModal, () => {
   if (isOpenModal.value) document.body.style.overflow = "hidden";
   else document.body.style.overflow = "auto";
 });
+
+watch(isOpenUserSection, () => {
+  const userInfoSection = document.getElementById("userInfoSection");
+  const userInfo = document.getElementById("userInfo");
+
+  if (isOpenUserSection.value) {
+    userInfo.style.cssText = `
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    `;
+    userInfoSection.style.cssText += "box-shadow: 2px 2px 5px 0.5px rgba(0, 0, 0, .2);";
+  } else {
+    userInfo.style.display = "none";
+    userInfoSection.style.cssText -= "box-shadow: 2px 2px 5px 0.5px rgba(0, 0, 0, .2);";
+  }
+});
+
+const handleClickOpenUserSection = () => {
+  isOpenUserSection.value = !isOpenUserSection.value;
+};
 </script>
 
 <template>
@@ -36,7 +61,25 @@ watch(isOpenModal, () => {
           <span class="title extrabold">백구</span>
           <span class="reg">배리어프리 여행 사이트</span>
         </div>
-        <div class="user">
+        <div
+          v-if="username"
+          class="logined"
+          style="cursor: pointer"
+          id="userInfoSection"
+          @click="handleClickOpenUserSection"
+        >
+          <div style="display: flex; align-items: center">
+            <p>{{ username }}님, 안녕하세요!</p>
+            <ChevronDownIcon v-if="!isOpenUserSection" style="width: 1rem" />
+            <ChevronUpIcon class="point" v-if="isOpenUserSection" style="width: 1rem" />
+          </div>
+          <div id="userInfo" style="display: none">
+            <p class="hover">회원정보 수정</p>
+            <hr />
+            <p class="hover">로그아웃</p>
+          </div>
+        </div>
+        <div v-else class="user">
           <p @click="openModal('로그인')">로그인</p>
           <p @click="openModal('회원가입')">회원가입</p>
         </div>
@@ -86,6 +129,23 @@ img {
 
 .title {
   font-size: 1.5rem;
+}
+
+.logined {
+  position: fixed;
+  top: 1.5rem;
+  right: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  cursor: pointer;
+  background-color: rgb(255, 255, 255);
+  padding: 0 1rem;
+}
+
+.logined p {
+  font-size: 1rem;
 }
 
 .user {
