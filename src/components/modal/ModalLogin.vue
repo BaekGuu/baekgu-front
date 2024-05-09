@@ -18,6 +18,7 @@ const handleSubmit = async () => {
   if (status === OK) {
     alert("로그인 성공!");
     setCookie("username", data.nickName);
+    setCookie("userId", data.id);
     location.href = "/";
   } else {
     alert("로그인 실패 ㅠㅠ");

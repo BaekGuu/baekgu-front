@@ -2,7 +2,7 @@
 import { RouterLink } from "vue-router";
 import AppModal from "./AppModal.vue";
 import { ref, watch } from "vue";
-import { getCookie } from "@/util/cookies";
+import { deleteCookie, getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 
 const isOpenModal = ref(false);
@@ -49,6 +49,12 @@ watch(isOpenUserSection, () => {
 const handleClickOpenUserSection = () => {
   isOpenUserSection.value = !isOpenUserSection.value;
 };
+const handleClickLogout = () => {
+  alert("로그아웃!");
+  deleteCookie("username");
+  deleteCookie("userId");
+  location.href = "/";
+};
 </script>
 
 <template>
@@ -76,7 +82,7 @@ const handleClickOpenUserSection = () => {
           <div id="userInfo" style="display: none">
             <p class="hover">회원정보 수정</p>
             <hr />
-            <p class="hover">로그아웃</p>
+            <p class="hover" @click="handleClickLogout">로그아웃</p>
           </div>
         </div>
         <div v-else class="user">
