@@ -1,5 +1,6 @@
 <script setup>
-import { axiosClient } from "@/api/axios";
+// import { axiosClient } from "@/util/http-client";
+import { getBoardList } from "@/api/board";
 import BaseButton from "@/components/BaseButton.vue";
 import { onMounted, ref } from "vue";
 
@@ -8,7 +9,7 @@ const currentPage = ref(1);
 const datas = ref([]);
 
 onMounted(async () => {
-  datas.value = await axiosClient.get("/board/list");
+  datas.value = await getBoardList();
 });
 
 const handleClickPageNum = pageNum => {

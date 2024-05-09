@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const createInstance = () => {
+const createInstance = () => {
   const instance = axios.create({
     baseURL: "http://192.168.120.76:8080",
     timeout: 5000,
@@ -8,3 +8,5 @@ export const createInstance = () => {
 
   return instance;
 };
+
+export const clientInstance = createInstance();

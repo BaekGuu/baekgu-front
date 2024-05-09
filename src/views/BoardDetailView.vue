@@ -1,7 +1,9 @@
 <script setup>
-import { axiosClient } from "@/api/axios";
+// import { axiosClient } from "@/util/http-client";
+import { getBoard, registBoard } from "@/api/board";
 import BaseButton from "@/components/BaseButton.vue";
 import { OK } from "@/constant/status";
+import { getCookie } from "@/util/cookies";
 import { onMounted, ref } from "vue";
 
 const board = ref({
@@ -15,7 +17,7 @@ const board = ref({
 const query = ref(window.location.pathname.split("/board/")[1]);
 
 onMounted(async () => {
-  if (query.value !== "regist") board.value = await axiosClient.get("/board/" + query.value);
+  if (query.value !== "regist") board.value = await getBoard(query.value);
 });
 
 const navigateToList = () => {
@@ -23,13 +25,17 @@ const navigateToList = () => {
 };
 
 const handleSubmit = async () => {
-  let requestBody = {
-    title: document.querySelector('input[name="title"]').value,
-    writerId: document.querySelector('input[name="writerId"]').value,
-    content: document.querySelector('textarea[name="content"]').value,
+  const params = {
+    title: board.value.title,
+    writerId: getCookie("userId"),
+    content: board.value.content,
   };
-  let status = await axiosClient.post("/board/regist", requestBody);
-  if (status === OK) window.location.href = "/board";
+
+  const { status } = await registBoard(params);
+  if (status === OK) {
+    window.location.href = "/board";
+    alert("새로운 글이 등록 되었습니다!");
+  }
 };
 </script>
 
@@ -52,9 +58,9 @@ const handleSubmit = async () => {
           :value="board.title"
           disabled
         />
-        <input v-else type="text" name="title" id="title" />
+        <input v-else type="text" id="title" v-model="board.title" />
       </div>
-      <input type="hidden" name="writerId" value="haram" />
+      <input type="hidden" value="haram" />
       <span style="text-align: end; width: 100%" class="bold"
         >✍작성자: {{ query === "regist" ? "람라미" : board.writerId }}</span
       >
@@ -62,13 +68,12 @@ const handleSubmit = async () => {
         <label for="content">내용</label>
         <textarea
           v-if="query !== 'regist'"
-          name="content"
           id="content"
           rows="20"
           :value="board.content"
           disabled
         ></textarea>
-        <textarea v-else name="content" id="content" rows="20"></textarea>
+        <textarea v-else id="content" rows="20" v-model="board.content"></textarea>
       </div>
       <BaseButton
         v-if="query !== 'regist'"
