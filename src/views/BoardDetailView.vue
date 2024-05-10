@@ -42,16 +42,18 @@ const handleClickDeleteIcon = async () => {
         재밌게 보셨다면, 더 많은 사람들이 여행 경험을 공유할 수 있도록 새로운 글을 작성해 주세요.
       </p>
     </div>
-    <form class="inner" @submit.prevent="handleSubmit" id="form">
+    <div class="inner container">
       <div style="align-items: center">
-        <label for="title">제목</label>
-        <input type="text" id="title" v-model="board.title" disabled />
+        <p style="width: 10%">제목:</p>
+        <p style="width: 75%">{{ board.title }}</p>
+        <p style="width: 15%; text-align: end;">✍ {{ board.writerId }}</p>
       </div>
-      <span style="text-align: end; width: 100%" class="bold">✍작성자: {{ board.writerId }}</span>
+      <hr />
       <div style="align-items: start">
-        <label for="content">내용</label>
-        <textarea id="content" v-model="board.content" rows="20" disabled></textarea>
+        <p style="width: 10%">내용:</p>
+        <p style="width: 90%">{{ board.content }}</p>
       </div>
+      <hr />
       <div class="edit-and-delete">
         <div class="flex-center pointer" @click="router.push('/board/edit?' + board.boardId)">
           <PencilSquareIcon /><span>수정하기</span>
@@ -64,9 +66,13 @@ const handleClickDeleteIcon = async () => {
         :is-active="true"
         :width="20"
         text="목록 보기"
-        :on-click="() => { router.push('/board') }"
+        :on-click="
+          () => {
+            router.push('/board');
+          }
+        "
       />
-    </form>
+    </div>
     <div class="inner">댓글 부분</div>
   </main>
 </template>
@@ -80,18 +86,15 @@ const handleClickDeleteIcon = async () => {
   padding: 3rem 0;
 }
 
-form {
+.container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 0.5rem;
   margin: 2rem auto;
   margin-bottom: 0.5rem;
 }
 
-form div {
+.container div {
   display: flex;
-  justify-content: space-between;
 }
 
 input:disabled,
@@ -101,18 +104,13 @@ textarea:disabled {
   border: none;
 }
 
-form label {
-  font-size: 1.5rem;
-}
-
-input[type="text"],
-textarea {
-  width: 80%;
-}
-
 button {
   margin-top: 1rem;
   align-self: end;
+}
+
+hr {
+  width: 100%;
 }
 
 .edit-and-delete {

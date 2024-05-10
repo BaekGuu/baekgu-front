@@ -43,14 +43,14 @@ const handleSubmit = async () => {
       <p class="inner">나의 여행 경험을 사용자들과 공유해 보세요.</p>
     </div>
     <form class="inner" @submit.prevent="handleSubmit" id="form">
-      <div style="align-items: center">
-        <label for="title">제목</label>
-        <input type="text" id="title" v-model="board.title" />
+      <div style="align-items: end">
+        <label for="title" style="width: 10%">제목</label>
+        <input type="text" style="width: 80%" id="title" v-model="board.title" />
+        <p style="width: 10%; text-align: end">✍{{ userId }}</p>
       </div>
-      <span style="text-align: end; width: 100%" class="bold">✍작성자: {{ userId }}</span>
       <div style="align-items: start">
-        <label for="content">내용</label>
-        <textarea id="content" rows="20" v-model="board.content"></textarea>
+        <label for="content" style="width: 10%">내용</label>
+        <textarea id="content" style="width: 90%" rows="20" v-model="board.content"></textarea>
       </div>
       <BaseButton :is-active="true" :width="20" text="저장" :type="'submit'" />
     </form>
@@ -82,11 +82,6 @@ form div {
 
 form label {
   font-size: 1.5rem;
-}
-
-input[type="text"],
-textarea {
-  width: 80%;
 }
 
 button {
