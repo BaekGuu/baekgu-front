@@ -5,6 +5,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { getCookie } from "@/util/cookies";
 import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
+import router from "@/router";
 
 const { notify } = useNotification();
 
@@ -26,10 +27,6 @@ onMounted(async () => {
 
 const handleClickPageNum = pageNum => {
   currentPage.value = pageNum;
-};
-
-const navigateToDetail = id => {
-  window.location.href = "/board/" + id;
 };
 </script>
 
@@ -59,7 +56,15 @@ const navigateToDetail = id => {
           <th>작성 날짜</th>
         </thead>
         <tbody>
-          <tr v-for="data in datas" :key="data.boardId" @click="navigateToDetail(data.boardId)">
+          <tr
+            v-for="data in datas"
+            :key="data.boardId"
+            @click="
+              () => {
+                router.push('/board/' + data.boardId);
+              }
+            "
+          >
             <td>{{ data.boardId }}</td>
             <td>{{ data.title }}</td>
             <td>{{ data.writerId }}</td>

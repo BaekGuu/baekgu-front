@@ -5,6 +5,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import { registBoard } from "@/api/board";
 import { useNotification } from "@kyvg/vue3-notification";
 import { OK } from "@/constant/status";
+import router from "@/router";
 
 const { notify } = useNotification();
 const userId = ref(getCookie("userId"));
@@ -23,7 +24,7 @@ const handleSubmit = async () => {
       type: "success",
       text: "새로운 글이 등록 되었습니다!",
     });
-    window.location.href = "/board";
+    router.push("/board");
   }
 };
 </script>

@@ -5,6 +5,7 @@ import { OK } from "@/constant/status";
 import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
+import router from "@/router";
 
 const { notify } = useNotification();
 
@@ -21,14 +22,6 @@ onMounted(async () => {
   board.value = await getBoard(board.value.boardId);
 });
 
-const navigateToList = () => {
-  window.location.href = "/board";
-};
-
-const handleClickEditIcon = id => {
-  location.href = "/board/edit?" + id;
-};
-
 const handleClickDeleteIcon = async () => {
   const { status } = await deleteBoard({
     writerId: board.value.writerId,
@@ -37,7 +30,7 @@ const handleClickDeleteIcon = async () => {
 
   if (status === OK) {
     notify({ type: "success", text: "글이 삭제 되었습니다!" });
-    navigateToList();
+    router.push("/board");
   }
 };
 </script>
@@ -60,14 +53,19 @@ const handleClickDeleteIcon = async () => {
         <textarea id="content" v-model="board.content" rows="20" disabled></textarea>
       </div>
       <div class="edit-and-delete">
-        <div class="flex-center pointer" @click="() => handleClickEditIcon(board.boardId)">
+        <div class="flex-center pointer" @click="router.push('/board/edit?' + board.boardId)">
           <PencilSquareIcon /><span>수정하기</span>
         </div>
         <div class="flex-center pointer" @click="handleClickDeleteIcon">
           <TrashIcon /><span>삭제하기</span>
         </div>
       </div>
-      <BaseButton :is-active="true" :width="20" text="목록 보기" :on-click="navigateToList" />
+      <BaseButton
+        :is-active="true"
+        :width="20"
+        text="목록 보기"
+        :on-click="() => { router.push('/board') }"
+      />
     </form>
     <div class="inner">댓글 부분</div>
   </main>

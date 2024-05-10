@@ -5,16 +5,13 @@ import { ref, watch } from "vue";
 import { deleteCookie, getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import { useNotification } from "@kyvg/vue3-notification";
+import router from "@/router";
 
 const { notify } = useNotification();
 const isOpenModal = ref(false);
 const isOpenUserSection = ref(false);
 const modalType = ref("로그인");
 const username = ref(getCookie("username"));
-
-const navigateMain = () => {
-  window.location.href = "/";
-};
 
 const openModal = type => {
   isOpenModal.value = true;
@@ -64,7 +61,7 @@ const handleClickLogout = () => {
   <header class="bg-white border-bottom">
     <main class="border-bottom">
       <div class="inner">
-        <div class="logo" @click="navigateMain">
+        <div class="logo" @click="router.push('/')">
           <img src="../assets/img/백구로고.png" />
           <span class="title extrabold">백구</span>
           <span class="reg">배리어프리 여행 사이트</span>
