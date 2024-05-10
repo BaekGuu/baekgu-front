@@ -1,18 +1,20 @@
 # 🐾 백구
+
+![로고](/src/assets/img/백구로고.png)
+
+# 💡 About
+
 장애인, 고령자, 임산부, 영유아 가족 등을 포함한 ‘모든 관광객’이
 이동의 불편 및 관광 활동의 제약 없이 이용할 수 있는 여행을 떠날 수 있도록 도와주는 사이트입니다.
 우리네 토종 강아지 진돗개 백구와 함께 아무런 걱정 없이 여행을 떠나보세요!
 
-# 💡 About
-
-무장애 여행 사이트
 
 # 🌱 Teck Skill
-## Installed Libraries
-https://www.npmjs.com/package/@heroicons/vue
-
-
-https://www.npmjs.com/package/@kyvg/vue3-notification
+- Main: `Vue.js`
+- Dev: `Vite`
+- Formatter & Code Style: `ESLint` `Prettier`
+- Deploy: `AWS S3` `Github Actions` 
+- Installed Libraries: `@heroicons/vue` `notivue`
 
 
 # 📌 Convention
