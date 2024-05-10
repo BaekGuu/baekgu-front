@@ -3,6 +3,8 @@ import BoardListView from "@/views/BoardListView.vue";
 import MainView from "@/views/MainView.vue";
 import SearchView from "@/views/SearchView.vue";
 import BoardDetailView from "@/views/BoardDetailView.vue";
+import BoardRegistView from "@/views/BoardRegistView.vue";
+import BoardEditView from "@/views/BoardEditView.vue";
 
 const router = createRouter({
   linkActiveClass: "active",
@@ -27,6 +29,16 @@ const router = createRouter({
       path: "/board/:id",
       name: "detail",
       component: BoardDetailView,
+    },
+    {
+      path: "/board/regist",
+      name: "regist",
+      component: BoardRegistView,
+    },
+    {
+      path: "/board/edit",
+      name: "edit",
+      component: BoardEditView,
     },
   ],
 });

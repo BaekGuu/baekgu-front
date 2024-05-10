@@ -8,7 +8,7 @@ import AppHeader from "./components/AppHeader.vue";
   <RouterView />
   <AppFooter />
 
-  <notifications position="top center" width="30%" />
+  <notifications position="top center" width="50%" />
 </template>
 
 <style scoped></style>

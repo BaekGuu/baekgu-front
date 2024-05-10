@@ -1,46 +1,43 @@
 <script setup>
-// import { axiosClient } from "@/util/http-client";
-import { getBoard, registBoard } from "@/api/board";
-import BaseButton from "@/components/BaseButton.vue";
+import { deleteBoard, getBoard } from "@/api/board";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/vue/24/solid";
 import { OK } from "@/constant/status";
-import { getCookie } from "@/util/cookies";
 import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const { notify } = useNotification();
 
 const board = ref({
-  boardId: Number,
+  boardId: 0,
   content: "",
   title: "",
   writerId: "",
   writingTime: "",
 });
 
-const query = ref(window.location.pathname.split("/board/")[1]);
-
 onMounted(async () => {
-  if (query.value !== "regist") board.value = await getBoard(query.value);
+  board.value.boardId = window.location.pathname.split("/board/")[1];
+  board.value = await getBoard(board.value.boardId);
 });
 
 const navigateToList = () => {
   window.location.href = "/board";
 };
 
-const handleSubmit = async () => {
-  const params = {
-    title: board.value.title,
-    writerId: getCookie("userId"),
-    content: board.value.content,
-  };
+const handleClickEditIcon = id => {
+  location.href = "/board/edit?" + id;
+};
 
-  const { status } = await registBoard(params);
+const handleClickDeleteIcon = async () => {
+  const { status } = await deleteBoard({
+    writerId: board.value.writerId,
+    boardId: board.value.boardId,
+  });
+
   if (status === OK) {
-    window.location.href = "/board";
-    notify({
-      type: "success",
-      text: "새로운 글이 등록 되었습니다!",
-    });
+    notify({ type: "success", text: "글이 삭제 되었습니다!" });
+    navigateToList();
   }
 };
 </script>
@@ -48,48 +45,31 @@ const handleSubmit = async () => {
 <template>
   <main class="page">
     <div class="banner bg-assistant">
-      <p v-if="query !== 'regist'" class="inner">
+      <p class="inner">
         재밌게 보셨다면, 더 많은 사람들이 여행 경험을 공유할 수 있도록 새로운 글을 작성해 주세요.
       </p>
-      <p v-else class="inner">나의 여행 경험을 사용자들과 공유해 보세요.</p>
     </div>
     <form class="inner" @submit.prevent="handleSubmit" id="form">
       <div style="align-items: center">
         <label for="title">제목</label>
-        <input
-          v-if="query !== 'regist'"
-          type="text"
-          name="title"
-          id="title"
-          :value="board.title"
-          disabled
-        />
-        <input v-else type="text" id="title" v-model="board.title" />
+        <input type="text" id="title" v-model="board.title" disabled />
       </div>
-      <input type="hidden" value="haram" />
-      <span style="text-align: end; width: 100%" class="bold"
-        >✍작성자: {{ query === "regist" ? "람라미" : board.writerId }}</span
-      >
+      <span style="text-align: end; width: 100%" class="bold">✍작성자: {{ board.writerId }}</span>
       <div style="align-items: start">
         <label for="content">내용</label>
-        <textarea
-          v-if="query !== 'regist'"
-          id="content"
-          rows="20"
-          :value="board.content"
-          disabled
-        ></textarea>
-        <textarea v-else id="content" rows="20" v-model="board.content"></textarea>
+        <textarea id="content" v-model="board.content" rows="20" disabled></textarea>
       </div>
-      <BaseButton
-        v-if="query !== 'regist'"
-        :is-active="true"
-        :width="20"
-        text="목록 보기"
-        :on-click="navigateToList"
-      />
-      <BaseButton v-else :is-active="true" :width="20" text="저장" :type="'submit'" />
+      <div class="edit-and-delete">
+        <div class="flex-center pointer" @click="() => handleClickEditIcon(board.boardId)">
+          <PencilSquareIcon /><span>수정하기</span>
+        </div>
+        <div class="flex-center pointer" @click="handleClickDeleteIcon">
+          <TrashIcon /><span>삭제하기</span>
+        </div>
+      </div>
+      <BaseButton :is-active="true" :width="20" text="목록 보기" :on-click="navigateToList" />
     </form>
+    <div class="inner">댓글 부분</div>
   </main>
 </template>
 
@@ -108,6 +88,7 @@ form {
   justify-content: space-between;
   gap: 0.5rem;
   margin: 2rem auto;
+  margin-bottom: 0.5rem;
 }
 
 form div {
@@ -134,5 +115,14 @@ textarea {
 button {
   margin-top: 1rem;
   align-self: end;
+}
+
+.edit-and-delete {
+  justify-content: end;
+  gap: 0.5rem;
+}
+
+.edit-and-delete svg {
+  height: 2rem;
 }
 </style>

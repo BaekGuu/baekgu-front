@@ -17,3 +17,15 @@ export const registBoard = async params => {
     return res;
   });
 };
+
+export const deleteBoard = async params => {
+  return await clientInstance.post("/board/delete", params).then(res => {
+    return res;
+  });
+};
+
+export const editBoard = async params => {
+  return await clientInstance.put("/board/update", params).then(res => {
+    return res;
+  });
+};
