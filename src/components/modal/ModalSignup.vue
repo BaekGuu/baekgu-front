@@ -1,12 +1,11 @@
 <script setup>
 import { ref } from "vue";
 import BaseButton from "../BaseButton.vue";
-import { useNotification } from "@kyvg/vue3-notification";
 import { checkDuplicateId, checkDuplicateNickName, signup } from "@/api/member";
+import { useNotification } from "@kyvg/vue3-notification";
 import { OK } from "@/constant/status";
 
 const { notify } = useNotification();
-
 const user = ref({
   nickName: null,
   id: null,
@@ -22,24 +21,24 @@ const canSignup = ref(false);
 
 const handleClickIdCheckButton = async () => {
   if (!user.value.id) {
-    notify("아이디를 입력해 주세요!");
+    notify({ type: "warn", text: "아이디를 입력해 주세요!" });
     return;
   }
 
   const { data } = await checkDuplicateId(user.value.id);
   if (data === 0) canUseID.value = true;
-  else notify("이미 사용 중인 아이디 입니다!");
+  else notify({ type: "warn", text: "이미 사용 중인 아이디 입니다!" });
 };
 
 const handleClickNickNameCheckButton = async () => {
   if (!user.value.nickName) {
-    notify("닉네임을 입력해 주세요!");
+    notify({ type: "warn", text: "닉네임을 입력해 주세요!" });
     return;
   }
 
   const { data } = await checkDuplicateNickName(user.value.nickName);
   if (data === 0) canUseNickName.value = true;
-  else notify("이미 사용 중인 닉네임 입니다!");
+  else notify({ type: "warn", text: "이미 사용 중인 닉네임 입니다!" });
 };
 
 const handleSubmit = async () => {
@@ -47,7 +46,7 @@ const handleSubmit = async () => {
     !canUseID.value && !canUseNickName.value && !canUsePassword.value && user.value.email;
 
   if (!canSignup.value) {
-    notify("모든 항목을 작성해 주세요!");
+    notify({ type: "warn", text: "모든 항목을 작성해 주세요!" });
     return;
   }
 
@@ -59,8 +58,8 @@ const handleSubmit = async () => {
   };
 
   const { status } = await signup(params);
-  if (status == OK) notify("회원가입 성공!");
-  else notify("회원 가입 실패 ㅠㅠ");
+  if (status === OK) notify({ type: "success", text: "회원 가입 성공!!" });
+  else notify({ type: "error", text: "회원 가입 실패 ㅠㅠ" });
 };
 </script>
 

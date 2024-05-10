@@ -1,5 +1,4 @@
 <script setup>
-import { Notifications } from "@kyvg/vue3-notification";
 import AppFooter from "./components/AppFooter.vue";
 import AppHeader from "./components/AppHeader.vue";
 </script>
@@ -8,11 +7,8 @@ import AppHeader from "./components/AppHeader.vue";
   <AppHeader />
   <RouterView />
   <AppFooter />
-  <Notifications position="top left" width="500" />
+
+  <notifications position="top center" width="30%" />
 </template>
 
-<style scoped>
-.notification-content {
-  font-size: 1.5rem;
-}
-</style>
+<style scoped></style>

@@ -151,3 +151,11 @@ textarea {
 .hover:hover {
   color: #7aa2ce;
 }
+
+.notification-title {
+  font-size: 1.5rem;
+}
+
+.notification-content {
+  font-size: 1.5rem;
+}

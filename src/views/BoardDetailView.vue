@@ -4,7 +4,10 @@ import { getBoard, registBoard } from "@/api/board";
 import BaseButton from "@/components/BaseButton.vue";
 import { OK } from "@/constant/status";
 import { getCookie } from "@/util/cookies";
+import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
+
+const { notify } = useNotification();
 
 const board = ref({
   boardId: Number,
@@ -34,7 +37,10 @@ const handleSubmit = async () => {
   const { status } = await registBoard(params);
   if (status === OK) {
     window.location.href = "/board";
-    alert("새로운 글이 등록 되었습니다!");
+    notify({
+      type: "success",
+      text: "새로운 글이 등록 되었습니다!",
+    });
   }
 };
 </script>

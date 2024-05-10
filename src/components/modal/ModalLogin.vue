@@ -4,6 +4,9 @@ import { setCookie } from "@/util/cookies";
 import { login } from "@/api/member";
 import { ref } from "vue";
 import { OK } from "@/constant/status";
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification();
 
 const id = ref("");
 const password = ref("");
@@ -16,12 +19,12 @@ const handleSubmit = async () => {
 
   const { status, data } = await login(requestBody);
   if (status === OK) {
-    alert("로그인 성공!");
+    notify({ type: "success", text: "로그인 성공!" });
     setCookie("username", data.nickName);
     setCookie("userId", data.id);
     location.href = "/";
   } else {
-    alert("로그인 실패 ㅠㅠ");
+    notify({ type: "error", text: "로그인 실패 ㅠㅠ" });
   }
 };
 </script>

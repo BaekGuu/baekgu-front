@@ -4,7 +4,9 @@ import AppModal from "./AppModal.vue";
 import { ref, watch } from "vue";
 import { deleteCookie, getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
+import { useNotification } from "@kyvg/vue3-notification";
 
+const { notify } = useNotification();
 const isOpenModal = ref(false);
 const isOpenUserSection = ref(false);
 const modalType = ref("로그인");
@@ -50,7 +52,7 @@ const handleClickOpenUserSection = () => {
   isOpenUserSection.value = !isOpenUserSection.value;
 };
 const handleClickLogout = () => {
-  alert("로그아웃!");
+  notify({ type: "success", text: "로그아웃!" });
   deleteCookie("username");
   deleteCookie("userId");
   location.href = "/";
