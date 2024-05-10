@@ -57,7 +57,12 @@ const handleClickLogout = () => {
 </script>
 
 <template>
-  <AppModal v-if="isOpenModal" :modal-type="modalType" @close-modal="closeModal" />
+  <AppModal
+    v-if="isOpenModal"
+    :modal-type="modalType"
+    @close-modal="closeModal"
+    @open-modal="openModal"
+  />
   <header class="bg-white border-bottom">
     <main class="border-bottom">
       <div class="inner">
@@ -68,8 +73,7 @@ const handleClickLogout = () => {
         </div>
         <div
           v-if="username"
-          class="logined"
-          style="cursor: pointer"
+          class="logined pointer"
           id="userInfoSection"
           @click="handleClickOpenUserSection"
         >
@@ -79,7 +83,9 @@ const handleClickLogout = () => {
             <ChevronUpIcon class="point" v-if="isOpenUserSection" style="width: 1rem" />
           </div>
           <div id="userInfo" style="display: none">
-            <p class="hover">회원정보 수정</p>
+            <p class="hover" @click="openModal('내 정보 보기')">내 정보 보기</p>
+            <hr />
+            <p class="hover" @click="openModal('회원 정보 수정')">회원 정보 수정</p>
             <hr />
             <p class="hover" @click="handleClickLogout">로그아웃</p>
           </div>

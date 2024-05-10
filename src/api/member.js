@@ -23,3 +23,15 @@ export const checkDuplicateNickName = async nickName => {
     return res;
   });
 };
+
+export const getUserInfo = async id => {
+  return await clientInstance.get("/member/id/" + id).then(res => {
+    return res;
+  });
+};
+
+export const editUserInfo = async params => {
+  return await clientInstance.put("/member/update", params).then(res => {
+    return res;
+  });
+};

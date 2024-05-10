@@ -1,5 +1,7 @@
 <script setup>
 import ModalLogin from "./modal/ModalLogin.vue";
+import ModalProfileEdit from "./modal/ModalProfileEdit.vue";
+import ModalProfileView from "./modal/ModalProfileView.vue";
 import ModalSignup from "./modal/ModalSignup.vue";
 defineProps({
   modalType: String,
@@ -18,6 +20,8 @@ defineProps({
       <div class="bg-white" style="border-radius: 15px">
         <ModalLogin v-if="modalType === '로그인'" />
         <ModalSignup v-if="modalType === '회원가입'" />
+        <ModalProfileView v-if="modalType === '내 정보 보기'" />
+        <ModalProfileEdit v-if="modalType === '회원 정보 수정'" />
       </div>
     </div>
   </div>
