@@ -2,14 +2,26 @@
 // import { axiosClient } from "@/util/http-client";
 import { getBoardList } from "@/api/board";
 import BaseButton from "@/components/BaseButton.vue";
+import { getCookie } from "@/util/cookies";
+import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
+
+const { notify } = useNotification();
 
 const pages = ref(10);
 const currentPage = ref(1);
 const datas = ref([]);
 
 onMounted(async () => {
-  datas.value = await getBoardList();
+  if (!getCookie("username")) {
+    notify({
+      type: "error",
+      title: "회원 전용 메뉴 입니다!",
+      text: "먼저 로그인을 진행 해주세요 :)",
+    });
+  } else {
+    datas.value = await getBoardList();
+  }
 });
 
 const handleClickPageNum = pageNum => {
