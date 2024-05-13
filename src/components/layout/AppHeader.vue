@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
-import AppModal from "./AppModal.vue";
+import AppModal from "../BaseModal.vue";
 import { ref, watch } from "vue";
 import { deleteCookie, getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
@@ -67,7 +67,7 @@ const handleClickLogout = () => {
     <main class="border-bottom">
       <div class="inner">
         <div class="logo" @click="router.push('/')">
-          <img src="../assets/img/백구로고.png" />
+          <img src="../../assets/img/백구로고.png" />
           <span class="title extrabold">백구</span>
           <span class="reg">배리어프리 여행 사이트</span>
         </div>
