@@ -1,125 +1,78 @@
 <script setup>
-import { ref } from "vue";
 import BaseButton from "../BaseButton.vue";
-import { checkDuplicateId, checkDuplicateNickName, signup } from "@/api/member";
-import { useNotification } from "@kyvg/vue3-notification";
-import { OK } from "@/constant/status";
+import { useMemberStore } from "@/stores/member-store";
+import { computed, ref } from "vue";
 
-const { notify } = useNotification();
-const user = ref({
-  nickName: null,
-  id: null,
-  password: null,
-  checkPassword: null,
-  email: null,
+const { member, checkPassword, handleClickCheckId, handleClickCheckNickName, handleSignup } =
+  useMemberStore();
+
+const validation = ref({
+  id: true,
+  nickName: false,
+  password: false,
 });
 
-const canUseID = ref(false);
-const canUseNickName = ref(false);
-const canUsePassword = ref(false);
-const canSignup = ref(false);
-
-const handleClickIdCheckButton = async () => {
-  if (!user.value.id) {
-    notify({ type: "warn", text: "아이디를 입력해 주세요!" });
-    return;
-  }
-
-  const { data } = await checkDuplicateId(user.value.id);
-  if (data === 0) canUseID.value = true;
-  else notify({ type: "warn", text: "이미 사용 중인 아이디 입니다!" });
-};
-
-const handleClickNickNameCheckButton = async () => {
-  if (!user.value.nickName) {
-    notify({ type: "warn", text: "닉네임을 입력해 주세요!" });
-    return;
-  }
-
-  const { data } = await checkDuplicateNickName(user.value.nickName);
-  if (data === 0) canUseNickName.value = true;
-  else notify({ type: "warn", text: "이미 사용 중인 닉네임 입니다!" });
-};
-
-const handleSubmit = async () => {
-  canSignup.value =
-    !canUseID.value && !canUseNickName.value && !canUsePassword.value && user.value.email;
-
-  if (!canSignup.value) {
-    notify({ type: "warn", text: "모든 항목을 작성해 주세요!" });
-    return;
-  }
-
-  const params = {
-    nickName: user.value.nickName,
-    id: user.value.id,
-    password: user.value.password,
-    email: user.value.email,
-  };
-
-  const { status } = await signup(params);
-  if (status === OK) notify({ type: "success", text: "회원 가입 성공!!" });
-  else notify({ type: "error", text: "회원 가입 실패 ㅠㅠ" });
-};
+const isValid = computed(() => {
+  return validation.value.id &&
+    validation.value.password &&
+    validation.value.nickName &&
+    member.email
+    ? true
+    : false;
+});
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent="async () => await handleSignup(isValid)">
     <div>
       <input
         type="text"
         placeholder="닉네임"
-        v-model="user.nickName"
-        @change="
-          () => {
-            canUseNickName = false;
-          }
-        "
+        v-model="member.nickName"
+        @input="validation.nickName = false"
       />
       <BaseButton
         text="중복확인"
         :isActive="true"
-        :type="canUseNickName ? 'check' : 'button'"
-        @click="handleClickNickNameCheckButton"
+        :type="validation.nickName ? 'check' : 'button'"
+        @click="
+          async () => {
+            validation.nickName = await handleClickCheckNickName();
+          }
+        "
       />
     </div>
     <div>
-      <input
-        type="text"
-        placeholder="아이디"
-        v-model="user.id"
-        @change="
-          () => {
-            canUseID = false;
-          }
-        "
-      />
+      <input type="text" placeholder="아이디" v-model="member.id" @input="validation.id = false" />
       <BaseButton
         text="중복확인"
         :isActive="true"
-        :type="canUseID ? 'check' : 'button'"
-        @click="handleClickIdCheckButton"
+        :type="validation.id ? 'check' : 'button'"
+        @click="
+          async () => {
+            validation.id = await handleClickCheckId();
+          }
+        "
       ></BaseButton>
     </div>
-    <input type="password" placeholder="비밀번호" v-model="user.password" />
+    <input
+      type="password"
+      placeholder="비밀번호"
+      v-model="member.password"
+      @input="validation.password = member.password === checkPassword"
+    />
     <input
       type="password"
       placeholder="비밀번호 확인"
-      v-model="user.checkPassword"
-      @change="
-        () => {
-          canUsePassword = user.password === user.checkPassword;
-        }
-      "
+      v-model="checkPassword"
+      @input="validation.password = member.password === checkPassword"
     />
-    <span v-if="user.checkPassword && user.password && canUsePassword" class="point"
-      >비밀번호가 일치합니다.</span
-    >
-    <span v-if="user.checkPassword && user.password && !canUsePassword" class="primary"
+    <span v-if="checkPassword && validation.password" class="point">비밀번호가 일치합니다.</span>
+    <span v-if="checkPassword && !validation.password" class="primary"
       >비밀번호가 일치하지 않습니다.</span
     >
-    <input type="text" placeholder="이메일" v-model="user.email" />
-    <BaseButton text="회원가입" :isActive="canSignup" :width="100" :type="'submit'" />
+    <input type="text" placeholder="이메일" v-model="member.email" />
+    <BaseButton text="회원가입" :isActive="isValid" :width="100" :type="'submit'" />
   </form>
 </template>
 

@@ -10,7 +10,7 @@ defineProps({ type: String, text: String, width: Number, isActive: Boolean, onCl
     :style="{ width: width + '%' }"
     @click="onClick"
   >
-    {{ type !== "check" ? text : " " }}
+    {{ type === "check" ? "" : text }}
     <CheckIcon v-if="type === 'check'" class="check-icon" />
   </button>
 </template>

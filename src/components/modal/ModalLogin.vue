@@ -1,38 +1,14 @@
 <script setup>
 import BaseButton from "../BaseButton.vue";
-import { setCookie } from "@/util/cookies";
-import { login } from "@/api/member";
-import { ref } from "vue";
-import { OK } from "@/constant/status";
-import { useNotification } from "@kyvg/vue3-notification";
+import { useMemberStore } from "@/stores/member-store";
 
-const { notify } = useNotification();
-
-const id = ref("");
-const password = ref("");
-
-const handleSubmit = async () => {
-  const requestBody = {
-    id: id.value,
-    password: password.value,
-  };
-
-  const { status, data } = await login(requestBody);
-  if (status === OK) {
-    notify({ type: "success", text: "로그인 성공!" });
-    setCookie("username", data.nickName);
-    setCookie("userId", data.id);
-    location.href = "/";
-  } else {
-    notify({ type: "error", text: "로그인 실패 ㅠㅠ" });
-  }
-};
+const { member, handleLogin } = useMemberStore();
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
-    <input type="text" placeholder="아이디" v-model="id" />
-    <input type="password" placeholder="비밀번호" v-model="password" />
+  <form @submit.prevent="async () => await handleLogin()">
+    <input type="text" placeholder="아이디" v-model="member.id" />
+    <input type="password" placeholder="비밀번호" v-model="member.password" />
     <BaseButton text="로그인" :is-active="true" :width="100" :type="'submit'" />
     <div class="social">
       <img src="../../assets/img/kakao_login.svg" alt="카카오로그인" />
