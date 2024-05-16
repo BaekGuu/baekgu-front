@@ -4,7 +4,7 @@ export const getBoardList = async () => {
   return await clientInstance
     .get("/board/list")
     .then(res => {
-      return res.data;
+      return res;
     })
     .catch(error => {
       return error;
@@ -15,7 +15,7 @@ export const getBoard = async id => {
   return await clientInstance
     .get("/board/" + id)
     .then(res => {
-      return res.data;
+      return res;
     })
     .catch(error => {
       return error;

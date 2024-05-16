@@ -5,6 +5,6 @@ export const reload = () => {
     setTimeout(() => {
       router.go(0);
       resolve();
-    }, 1000);
+    }, 1200);
   });
 };

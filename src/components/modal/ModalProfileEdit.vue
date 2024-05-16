@@ -6,7 +6,8 @@ import { computed, onMounted, ref } from "vue";
 import { getUserInfo } from "@/api/member";
 import { getCookie } from "@/util/cookies";
 
-const { member, checkPassword, handleClickCheckNickName, handleclickUpdateProfile } = useMemberStore();
+const { member, checkPassword, handleClickCheckNickName, handleclickUpdateProfile } =
+  useMemberStore();
 
 const validation = ref({
   id: true,

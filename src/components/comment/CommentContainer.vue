@@ -1,37 +1,18 @@
 <script setup>
-import { getComments, registComment } from "@/api/comment";
-import { OK } from "@/constant/status";
-import { useMemberStore } from "@/stores/member-store";
-import { commentType } from "@/util/request-type";
-import { useNotification } from "@kyvg/vue3-notification";
+import { getComments } from "@/api/comment";
 import { onMounted, ref } from "vue";
 import BaseButton from "../BaseButton.vue";
 import CommentItem from "./CommentItem.vue";
-import router from "@/router";
+import { useCommentStore } from "@/stores/comment-store";
 
-const { notify } = useNotification();
-const { loginedMember } = useMemberStore();
+const { comment, handleClickSave } = useCommentStore();
 
-const boardId = ref(window.location.pathname.split("/board/")[1]);
-const comment = ref(commentType);
 const comments = ref([]);
 
 onMounted(async () => {
-  comments.value = await getComments(boardId.value);
+  comment.boardId = ref(window.location.pathname.split("/board/")[1]);
+  comments.value = await getComments(comment.boardId);
 });
-
-const handleSaveComment = async () => {
-  const { status } = await registComment({
-    comment: comment.value.comment,
-    memberId: loginedMember.id,
-    boardId: boardId.value,
-  });
-
-  if (status === OK) {
-    notify({ type: "success", text: "댓글이 등록 되었습니다!" });
-    router.go(0);
-  }
-};
 </script>
 
 <template>
@@ -42,7 +23,12 @@ const handleSaveComment = async () => {
       placeholder="댓글 또는 의견을 작성해 주세요."
       style="width: 80%"
     />
-    <BaseButton :is-active="true" text="등록" :width="15" :on-click="handleSaveComment" />
+    <BaseButton
+      :is-active="true"
+      text="등록"
+      :width="15"
+      :on-click="async () => await handleClickSave()"
+    />
   </div>
 
   <div v-for="comment in comments" :key="comment.commentId" class="comments">

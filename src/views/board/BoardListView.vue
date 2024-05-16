@@ -1,17 +1,17 @@
 <script setup>
-// import { axiosClient } from "@/util/http-client";
-import { getBoardList } from "@/api/board";
 import BaseButton from "@/components/BaseButton.vue";
 import { getCookie } from "@/util/cookies";
 import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
 import router from "@/router";
+import { getBoardList } from "@/api/board";
+import { OK } from "@/constant/status";
 
 const { notify } = useNotification();
 
+const boards = ref([]);
 const pages = ref(10);
 const currentPage = ref(1);
-const datas = ref([]);
 
 onMounted(async () => {
   if (!getCookie("username")) {
@@ -20,9 +20,9 @@ onMounted(async () => {
       title: "회원 전용 메뉴 입니다!",
       text: "먼저 로그인을 진행 해주세요 :)",
     });
-  } else {
-    datas.value = await getBoardList();
   }
+  const { status, data } = await getBoardList();
+  if (status === OK) boards.value = data;
 });
 
 const handleClickPageNum = pageNum => {
@@ -41,7 +41,7 @@ const handleClickPageNum = pageNum => {
         style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: end"
       >
         <p style="margin: 0">
-          총 <span class="primary bold">{{ datas.length }}</span
+          총 <span class="primary bold">{{ boards.length }}</span
           >건
         </p>
         <RouterLink to="/board/regist" style="width: 10%; height: 100%">
@@ -57,18 +57,18 @@ const handleClickPageNum = pageNum => {
         </thead>
         <tbody>
           <tr
-            v-for="data in datas"
-            :key="data.boardId"
+            v-for="board in boards"
+            :key="board.boardId"
             @click="
               () => {
-                router.push('/board/' + data.boardId);
+                router.push('/board/' + board.boardId);
               }
             "
           >
-            <td>{{ data.boardId }}</td>
-            <td>{{ data.title }}</td>
-            <td>{{ data.writerId }}</td>
-            <td>{{ data.writingTime }}</td>
+            <td>{{ board.boardId }}</td>
+            <td>{{ board.title }}</td>
+            <td>{{ board.writerId }}</td>
+            <td>{{ board.writingTime }}</td>
           </tr>
         </tbody>
       </table>

@@ -1,42 +1,16 @@
 <script setup>
-import { deleteComment, updateComment } from "@/api/comment";
-import { OK } from "@/constant/status";
+import { useCommentStore } from "@/stores/comment-store";
 import { useMemberStore } from "@/stores/member-store";
-import { reload } from "@/util/custom-router";
-import { notify } from "@kyvg/vue3-notification";
 import { ref } from "vue";
 
-const props = defineProps({ comment: Object });
+defineProps({ comment: Object });
 
 const { loginedMember } = useMemberStore();
+const { handlerClickDelete, handlerClickUpdate } = useCommentStore();
+
 const isEdit = ref(false);
 const boardId = ref(window.location.pathname.split("/board/")[1]);
 const newComment = ref("");
-
-const handlerClickDelete = async () => {
-  const { status } = await deleteComment({
-    commentId: props.comment.commentId,
-    memberId: loginedMember.id,
-  });
-  if (status === OK) {
-    notify({ type: "success", text: "댓글이 삭제 되었습니다!" });
-    reload();
-  }
-};
-
-const handlerClickUpdate = async () => {
-  const { status } = await updateComment({
-    memberId: loginedMember.id,
-    boardId: boardId.value,
-    commentId: props.comment.commentId,
-    comment: newComment.value,
-  });
-  if (status === OK) {
-    notify({ type: "success", text: "댓글이 수정 되었습니다!" });
-    reload();
-  }
-  isEdit.value = false;
-};
 </script>
 
 <template>
@@ -53,30 +27,18 @@ const handlerClickUpdate = async () => {
     <p v-else>{{ comment.comment }}</p>
   </div>
   <div v-if="comment.memberId === loginedMember.id" class="text-buttons">
-    <p
-      v-if="!isEdit"
-      class="pointer hover"
-      @click="
-        () => {
-          isEdit = true;
-        }
-      "
-    >
-      수정
+    <p v-if="!isEdit" class="pointer hover" @click="() => (isEdit = true)">수정</p>
+    <p v-if="!isEdit" class="pointer hover" @click="async () => await handlerClickDelete(comment)">
+      삭제
     </p>
-    <p v-if="!isEdit" class="pointer hover" @click="handlerClickDelete">삭제</p>
+    <p v-if="isEdit" class="pointer hover" @click="isEdit = false">취소</p>
     <p
       v-if="isEdit"
       class="pointer hover"
-      @click="
-        () => {
-          isEdit = false;
-        }
-      "
+      @click="async () => await handlerClickUpdate(comment, boardId, newComment)"
     >
-      취소
+      저장
     </p>
-    <p v-if="isEdit" class="pointer hover" @click="handlerClickUpdate">저장</p>
   </div>
 </template>
 

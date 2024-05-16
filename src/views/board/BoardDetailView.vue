@@ -1,39 +1,24 @@
 <script setup>
-import { deleteBoard, getBoard } from "@/api/board";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/vue/24/solid";
-import { OK } from "@/constant/status";
-import { useNotification } from "@kyvg/vue3-notification";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
 import CommentContainer from "@/components/comment/CommentContainer.vue";
+import { useBoardStore } from "@/stores/board-store";
+import { getBoard } from "@/api/board";
+import { OK } from "@/constant/status";
 
-const { notify } = useNotification();
-
-const board = ref({
-  boardId: 0,
-  content: "",
-  title: "",
-  writerId: "",
-  writingTime: "",
-});
+const { board, handleClickDeleteBoard } = useBoardStore();
 
 onMounted(async () => {
-  board.value.boardId = window.location.pathname.split("/board/")[1];
-  board.value = await getBoard(board.value.boardId);
-});
-
-const handleClickDeleteIcon = async () => {
-  const { status } = await deleteBoard({
-    writerId: board.value.writerId,
-    boardId: board.value.boardId,
-  });
-
+  board.boardId = location.pathname.split("/board/")[1];
+  const { status, data } = await getBoard(board.boardId);
   if (status === OK) {
-    notify({ type: "success", text: "글이 삭제 되었습니다!" });
-    router.push("/board");
+    board.title = data.title;
+    board.writerId = data.writerId;
+    board.content = data.content;
   }
-};
+});
 </script>
 
 <template>
@@ -57,10 +42,10 @@ const handleClickDeleteIcon = async () => {
       </div>
       <hr />
       <div class="buttons">
-        <div class="flex-center pointer" @click="router.push('/board/edit?' + board.boardId)">
+        <div class="flex-center pointer" @click="() => router.push('/board/edit?' + board.boardId)">
           <PencilSquareIcon /><span>수정하기</span>
         </div>
-        <div class="flex-center pointer" @click="handleClickDeleteIcon">
+        <div class="flex-center pointer" @click="() => handleClickDeleteBoard(board.boardId)">
           <TrashIcon /><span>삭제하기</span>
         </div>
         <BaseButton

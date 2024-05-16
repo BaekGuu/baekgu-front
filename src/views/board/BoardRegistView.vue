@@ -1,32 +1,10 @@
 <script setup>
-import { getCookie } from "@/util/cookies";
-import { ref } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
-import { registBoard } from "@/api/board";
-import { useNotification } from "@kyvg/vue3-notification";
-import { OK } from "@/constant/status";
-import router from "@/router";
+import { useMemberStore } from "@/stores/member-store";
+import { useBoardStore } from "@/stores/board-store";
 
-const { notify } = useNotification();
-const userId = ref(getCookie("userId"));
-
-const params = ref({
-  writerId: userId,
-  title: "",
-  content: "",
-});
-
-const handleSubmit = async () => {
-  const { status } = await registBoard(params.value);
-
-  if (status === OK) {
-    notify({
-      type: "success",
-      text: "새로운 글이 등록 되었습니다!",
-    });
-    router.push("/board");
-  }
-};
+const { loginedMember } = useMemberStore();
+const { board, handleSubmitRegist } = useBoardStore();
 </script>
 
 <template>
@@ -34,18 +12,20 @@ const handleSubmit = async () => {
     <div class="banner bg-assistant">
       <p class="inner">나의 여행 경험을 사용자들과 공유해 보세요.</p>
     </div>
-    <form class="inner" @submit.prevent="handleSubmit" id="form">
+    <form class="inner" @submit.prevent="async () => await handleSubmitRegist()" id="form">
       <div style="align-items: center">
         <label for="title">제목</label>
-        <input type="text" id="title" v-model="params.title" placeholder="최대 16자" />
+        <input type="text" id="title" v-model="board.title" placeholder="최대 16자" />
       </div>
-      <span style="text-align: end; width: 100%" class="bold">✍작성자: {{ userId }}</span>
+      <span style="text-align: end; width: 100%" class="bold"
+        >✍작성자: {{ loginedMember.id }}</span
+      >
       <div style="align-items: start">
         <label for="content">내용</label>
         <textarea
           id="content"
           rows="20"
-          v-model="params.content"
+          v-model="board.content"
           placeholder="최대 100자"
         ></textarea>
       </div>

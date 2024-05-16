@@ -1,40 +1,8 @@
 <script setup>
-import { getCookie } from "@/util/cookies";
-import { ref } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
-import { editBoard } from "@/api/board";
-import { useNotification } from "@kyvg/vue3-notification";
-import { OK } from "@/constant/status";
-import router from "@/router";
+import { useBoardStore } from "@/stores/board-store";
 
-const { notify } = useNotification();
-const userId = ref(getCookie("userId"));
-
-const board = ref({
-  content: "",
-  title: "",
-  writerId: userId.value,
-  boardId: parseInt(location.search.split("?")[1]),
-});
-
-const handleSubmit = async () => {
-  const params = {
-    boardId: board.value.boardId,
-    writerId: board.value.writerId,
-    title: board.value.title,
-    content: board.value.content,
-  };
-
-  const { status } = await editBoard(params);
-
-  if (status === OK) {
-    notify({
-      type: "success",
-      text: "글이 수정 되었습니다!",
-    });
-    router.push("/board");
-  }
-};
+const { board, handleSubmitEdit } = useBoardStore();
 </script>
 
 <template>
@@ -42,17 +10,17 @@ const handleSubmit = async () => {
     <div class="banner bg-assistant">
       <p class="inner">나의 여행 경험을 사용자들과 공유해 보세요.</p>
     </div>
-    <form class="inner" @submit.prevent="handleSubmit" id="form">
+    <form class="inner" @submit.prevent="async () => await handleSubmitEdit()">
       <div style="align-items: end">
         <label for="title" style="width: 10%">제목</label>
         <input type="text" style="width: 80%" id="title" v-model="board.title" />
-        <p style="width: 10%; text-align: end">✍{{ userId }}</p>
+        <p style="width: 15%; text-align: end">✍{{ board.writerId }}</p>
       </div>
       <div style="align-items: start">
         <label for="content" style="width: 10%">내용</label>
         <textarea id="content" style="width: 90%" rows="20" v-model="board.content"></textarea>
       </div>
-      <BaseButton :is-active="true" :width="20" text="저장" :type="'submit'" />
+      <BaseButton :is-active="true" :width="20" text="수정" :type="'submit'" />
     </form>
   </main>
 </template>

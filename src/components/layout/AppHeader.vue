@@ -2,7 +2,7 @@
 import { RouterLink } from "vue-router";
 import AppModal from "../BaseModal.vue";
 import { ref, watch } from "vue";
-import {  getCookie } from "@/util/cookies";
+import { getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import router from "@/router";
 import { useMemberStore } from "@/stores/member-store";
@@ -49,7 +49,6 @@ watch(isOpenUserSection, () => {
 const handleClickOpenUserSection = () => {
   isOpenUserSection.value = !isOpenUserSection.value;
 };
-
 </script>
 
 <template>
