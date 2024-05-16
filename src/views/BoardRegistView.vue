@@ -37,12 +37,17 @@ const handleSubmit = async () => {
     <form class="inner" @submit.prevent="handleSubmit" id="form">
       <div style="align-items: center">
         <label for="title">제목</label>
-        <input type="text" id="title" v-model="params.title" />
+        <input type="text" id="title" v-model="params.title" placeholder="최대 16자" />
       </div>
       <span style="text-align: end; width: 100%" class="bold">✍작성자: {{ userId }}</span>
       <div style="align-items: start">
         <label for="content">내용</label>
-        <textarea id="content" rows="20" v-model="params.content"></textarea>
+        <textarea
+          id="content"
+          rows="20"
+          v-model="params.content"
+          placeholder="최대 100자"
+        ></textarea>
       </div>
       <BaseButton :is-active="true" :width="20" text="저장" :type="'submit'" />
     </form>

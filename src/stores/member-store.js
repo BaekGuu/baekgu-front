@@ -9,7 +9,7 @@ import { OK } from "@/constant/status";
 import router from "@/router";
 import { notify } from "@kyvg/vue3-notification";
 import { defineStore } from "pinia";
-import { setCookie } from "@/util/cookies";
+import { setCookie, getCookie } from "@/util/cookies";
 
 export const useMemberStore = defineStore("member", {
   state: () => ({
@@ -20,6 +20,10 @@ export const useMemberStore = defineStore("member", {
       email: "",
     },
     checkPassword: "",
+    loginedMember: {
+      id: getCookie("userId"),
+      nickName: getCookie("username"),
+    },
   }),
   actions: {
     async handleClickCheckId() {

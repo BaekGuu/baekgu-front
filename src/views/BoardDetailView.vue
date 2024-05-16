@@ -6,6 +6,7 @@ import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
+import CommentContainer from "@/components/comment/CommentContainer.vue";
 
 const { notify } = useNotification();
 
@@ -42,11 +43,12 @@ const handleClickDeleteIcon = async () => {
         재밌게 보셨다면, 더 많은 사람들이 여행 경험을 공유할 수 있도록 새로운 글을 작성해 주세요.
       </p>
     </div>
+
     <div class="inner container">
       <div style="align-items: center">
         <p style="width: 10%">제목:</p>
         <p style="width: 75%">{{ board.title }}</p>
-        <p style="width: 15%; text-align: end;">✍ {{ board.writerId }}</p>
+        <p style="width: 15%; text-align: end">✍ {{ board.writerId }}</p>
       </div>
       <hr />
       <div style="align-items: start">
@@ -54,26 +56,23 @@ const handleClickDeleteIcon = async () => {
         <p style="width: 90%">{{ board.content }}</p>
       </div>
       <hr />
-      <div class="edit-and-delete">
+      <div class="buttons">
         <div class="flex-center pointer" @click="router.push('/board/edit?' + board.boardId)">
           <PencilSquareIcon /><span>수정하기</span>
         </div>
         <div class="flex-center pointer" @click="handleClickDeleteIcon">
           <TrashIcon /><span>삭제하기</span>
         </div>
+        <BaseButton
+          :is-active="true"
+          :width="15"
+          text="목록 보기"
+          :on-click="() => router.push('/board')"
+        />
       </div>
-      <BaseButton
-        :is-active="true"
-        :width="20"
-        text="목록 보기"
-        :on-click="
-          () => {
-            router.push('/board');
-          }
-        "
-      />
+
+      <CommentContainer />
     </div>
-    <div class="inner">댓글 부분</div>
   </main>
 </template>
 
@@ -91,6 +90,7 @@ const handleClickDeleteIcon = async () => {
   flex-direction: column;
   margin: 2rem auto;
   margin-bottom: 0.5rem;
+  gap: 1rem;
 }
 
 .container div {
@@ -104,21 +104,16 @@ textarea:disabled {
   border: none;
 }
 
-button {
-  margin-top: 1rem;
-  align-self: end;
-}
-
 hr {
   width: 100%;
 }
 
-.edit-and-delete {
+.buttons {
   justify-content: end;
   gap: 0.5rem;
 }
 
-.edit-and-delete svg {
+.buttons svg {
   height: 2rem;
 }
 </style>
