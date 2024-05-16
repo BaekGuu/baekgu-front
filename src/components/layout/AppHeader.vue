@@ -1,12 +1,13 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 import AppModal from "../BaseModal.vue";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import router from "@/router";
 import { useMemberStore } from "@/stores/member-store";
 
+const route = useRoute();
 const { handleClickLogout } = useMemberStore();
 
 const isOpenModal = ref(false);
@@ -22,6 +23,10 @@ const openModal = type => {
 const closeModal = () => {
   isOpenModal.value = false;
   modalType.value = "로그인";
+};
+
+const handleClickOpenUserSection = () => {
+  isOpenUserSection.value = !isOpenUserSection.value;
 };
 
 watch(isOpenModal, () => {
@@ -46,9 +51,9 @@ watch(isOpenUserSection, () => {
   }
 });
 
-const handleClickOpenUserSection = () => {
-  isOpenUserSection.value = !isOpenUserSection.value;
-};
+const isBoardRoute = computed(() => {
+  return route.path.startsWith("/board");
+})
 </script>
 
 <template>
@@ -93,9 +98,9 @@ const handleClickOpenUserSection = () => {
     </main>
     <nav>
       <div class="inner">
-        <RouterLink to="/" active-class="active">백구는요,</RouterLink>
-        <RouterLink to="/search" active-class="active">여행지 검색</RouterLink>
-        <RouterLink to="/board" active-class="active">게시판</RouterLink>
+        <RouterLink to="/" active-class="active" exact>백구는요,</RouterLink>
+        <RouterLink to="/search" active-class="active" exact>여행지 검색</RouterLink>
+        <RouterLink to="/board" :class="{ active: isBoardRoute }">게시판</RouterLink>
       </div>
     </nav>
   </header>

@@ -2,14 +2,16 @@
 import { useCommentStore } from "@/stores/comment-store";
 import { useMemberStore } from "@/stores/member-store";
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 
 defineProps({ comment: Object });
 
+const route = useRoute()
 const { loginedMember } = useMemberStore();
 const { handlerClickDelete, handlerClickUpdate } = useCommentStore();
 
 const isEdit = ref(false);
-const boardId = ref(window.location.pathname.split("/board/")[1]);
+const boardId = ref(route.path.split("/board/")[1]);
 const newComment = ref("");
 </script>
 

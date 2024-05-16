@@ -4,13 +4,15 @@ import { onMounted, ref } from "vue";
 import BaseButton from "../BaseButton.vue";
 import CommentItem from "./CommentItem.vue";
 import { useCommentStore } from "@/stores/comment-store";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const { comment, handleClickSave } = useCommentStore();
 
 const comments = ref([]);
 
 onMounted(async () => {
-  comment.boardId = ref(window.location.pathname.split("/board/")[1]);
+  comment.boardId = ref(route.path.split("/board/")[1]);
   comments.value = await getComments(comment.boardId);
 });
 </script>

@@ -7,11 +7,13 @@ import CommentContainer from "@/components/comment/CommentContainer.vue";
 import { useBoardStore } from "@/stores/board-store";
 import { getBoard } from "@/api/board";
 import { OK } from "@/constant/status";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const { board, handleClickDeleteBoard } = useBoardStore();
 
 onMounted(async () => {
-  board.boardId = location.pathname.split("/board/")[1];
+  board.boardId = route.path.split("/board/")[1];
   const { status, data } = await getBoard(board.boardId);
   if (status === OK) {
     board.title = data.title;
