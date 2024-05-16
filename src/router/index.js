@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import BoardListView from "@/views/BoardListView.vue";
 import MainView from "@/views/MainView.vue";
 import SearchView from "@/views/SearchView.vue";
-import BoardDetailView from "@/views/BoardDetailView.vue";
-import BoardRegistView from "@/views/BoardRegistView.vue";
-import BoardEditView from "@/views/BoardEditView.vue";
+import BoardListView from "@/views/board/BoardListView.vue";
+import BoardDetailView from "@/views/board/BoardDetailView.vue";
+import BoardRegistView from "@/views/board/BoardRegistView.vue";
+import BoardEditView from "@/views/board/BoardEditView.vue";
 
 const router = createRouter({
   linkActiveClass: "active",
