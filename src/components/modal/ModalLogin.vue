@@ -2,11 +2,11 @@
 import BaseButton from "../BaseButton.vue";
 import { useMemberStore } from "@/stores/member-store";
 
-const { member, handleLogin } = useMemberStore();
+const { member, handleSubmitLogin } = useMemberStore();
 </script>
 
 <template>
-  <form @submit.prevent="async () => await handleLogin()">
+  <form @submit.prevent="async () => await handleSubmitLogin()">
     <input type="text" placeholder="아이디" v-model="member.id" />
     <input type="password" placeholder="비밀번호" v-model="member.password" />
     <BaseButton text="로그인" :is-active="true" :width="100" :type="'submit'" />

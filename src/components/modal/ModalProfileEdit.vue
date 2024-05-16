@@ -2,9 +2,11 @@
 import BaseButton from "../BaseButton.vue";
 import baekgu_profile from "../../assets/img/baekgu_profile.png";
 import { useMemberStore } from "@/stores/member-store";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
+import { getUserInfo } from "@/api/member";
+import { getCookie } from "@/util/cookies";
 
-const { member, checkPassword, handleClickCheckNickName, handleUpdateProfile } = useMemberStore();
+const { member, checkPassword, handleClickCheckNickName, handleclickUpdateProfile } = useMemberStore();
 
 const validation = ref({
   id: true,
@@ -20,10 +22,17 @@ const isValid = computed(() => {
     ? true
     : false;
 });
+
+onMounted(async () => {
+  const { data } = await getUserInfo(getCookie("userId"));
+  member.id = data.id;
+  member.nickName = data.nickName;
+  member.email = data.email;
+});
 </script>
 
 <template>
-  <form @submit.prevent="async () => await handleUpdateProfile(isValid)">
+  <form @submit.prevent="async () => await handleclickUpdateProfile(isValid)">
     <div>
       <img :src="baekgu_profile" alt="백구이미지" />
     </div>

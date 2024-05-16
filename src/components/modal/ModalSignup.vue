@@ -3,7 +3,7 @@ import BaseButton from "../BaseButton.vue";
 import { useMemberStore } from "@/stores/member-store";
 import { computed, ref } from "vue";
 
-const { member, checkPassword, handleClickCheckId, handleClickCheckNickName, handleSignup } =
+const { member, checkPassword, handleClickCheckId, handleClickCheckNickName, handleSubmitSignup } =
   useMemberStore();
 
 const validation = ref({
@@ -23,7 +23,7 @@ const isValid = computed(() => {
 </script>
 
 <template>
-  <form @submit.prevent="async () => await handleSignup(isValid)">
+  <form @submit.prevent="async () => await handleSubmitSignup(isValid)">
     <div>
       <input
         type="text"

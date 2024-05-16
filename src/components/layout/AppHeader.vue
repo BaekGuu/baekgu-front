@@ -2,12 +2,13 @@
 import { RouterLink } from "vue-router";
 import AppModal from "../BaseModal.vue";
 import { ref, watch } from "vue";
-import { deleteCookie, getCookie } from "@/util/cookies";
+import {  getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
-import { useNotification } from "@kyvg/vue3-notification";
 import router from "@/router";
+import { useMemberStore } from "@/stores/member-store";
 
-const { notify } = useNotification();
+const { handleClickLogout } = useMemberStore();
+
 const isOpenModal = ref(false);
 const isOpenUserSection = ref(false);
 const modalType = ref("로그인");
@@ -48,12 +49,7 @@ watch(isOpenUserSection, () => {
 const handleClickOpenUserSection = () => {
   isOpenUserSection.value = !isOpenUserSection.value;
 };
-const handleClickLogout = () => {
-  notify({ type: "success", text: "로그아웃!" });
-  deleteCookie("username");
-  deleteCookie("userId");
-  location.href = "/";
-};
+
 </script>
 
 <template>

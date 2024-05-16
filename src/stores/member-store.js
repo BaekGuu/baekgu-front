@@ -6,10 +6,10 @@ import {
   signup,
 } from "@/api/member";
 import { OK } from "@/constant/status";
-import router from "@/router";
 import { notify } from "@kyvg/vue3-notification";
 import { defineStore } from "pinia";
-import { setCookie, getCookie } from "@/util/cookies";
+import { setCookie, getCookie, deleteCookie } from "@/util/cookies";
+import { reload } from "@/util/custom-router";
 
 export const useMemberStore = defineStore("member", {
   state: () => ({
@@ -52,23 +52,18 @@ export const useMemberStore = defineStore("member", {
         return false;
       }
     },
-    async handleSignup(isValid) {
+    async handleSubmitSignup(isValid) {
       if (isValid) {
         const { status } = await signup(this.member);
         if (status === OK) {
           notify({ type: "success", text: "회원 가입 성공!!" });
-          return new Promise(resolve => {
-            setTimeout(() => {
-              router.go(0);
-              resolve();
-            }, 2000);
-          });
+          reload();
         } else notify({ type: "error", text: "회원 가입 실패 ㅠㅠ" });
       } else {
         notify({ type: "warn", text: "모든 항목을 작성해 주세요!" });
       }
     },
-    async handleLogin() {
+    async handleSubmitLogin() {
       const { status, data } = await login({
         id: this.member.id,
         password: this.member.password,
@@ -77,29 +72,25 @@ export const useMemberStore = defineStore("member", {
         notify({ type: "success", text: "로그인 성공!" });
         setCookie("username", data.nickName);
         setCookie("userId", data.id);
-        return new Promise(resolve => {
-          setTimeout(() => {
-            router.go(0);
-            resolve();
-          }, 2000);
-        });
+        reload();
       } else {
         notify({ type: "error", text: "로그인 실패 ㅠㅠ" });
       }
     },
-    async handleUpdateProfile(isValid) {
+    async handleClickLogout() {
+      notify({ type: "success", text: "로그아웃!" });
+      deleteCookie("username");
+      deleteCookie("userId");
+      reload();
+    },
+    async handleclickUpdateProfile(isValid) {
       if (isValid) {
         const { status } = await editUserInfo(this.member);
 
         if (status === OK) {
           notify({ type: "success", text: "회원 정보가 수정 되었습니다!" });
           setCookie("username", this.member.nickName);
-          return new Promise(resolve => {
-            setTimeout(() => {
-              router.go(0);
-              resolve();
-            }, 2000);
-          });
+          reload();
         }
       } else notify({ type: "warn", text: "모든 항목을 작성해 주세요!" });
     },
