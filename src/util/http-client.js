@@ -2,9 +2,9 @@ import axios from "axios";
 
 const createInstance = () => {
   const instance = axios.create({
-    "baseURL": "http://192.168.120.73:8080",
+    "baseURL": import.meta.env.VITE_REST_API_URL,
     "timeout": 5000,
-    "Access-Control-Allow-Origin": `http://localhost:5173`,
+    "Access-Control-Allow-Origin": import.meta.env.VITE_CLIENT_URL,
     "Access-Control-Allow-Credentials": "true",
   });
 
