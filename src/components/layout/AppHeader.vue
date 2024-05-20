@@ -67,7 +67,7 @@ const isBoardRoute = computed(() => {
     <main class="border-bottom">
       <div class="inner">
         <div class="logo" @click="router.push('/')">
-          <img src="../../assets/img/백구로고.png" />
+          <img src="../../assets/img/백구로고.svg" />
           <span class="title extrabold">백구</span>
           <span class="reg">배리어프리 여행 사이트</span>
         </div>
