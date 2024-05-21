@@ -26,7 +26,6 @@ onMounted(async () => {
 });
 
 onUnmounted(() => (icons.value = []));
-console.log(icons);
 </script>
 
 <template>
