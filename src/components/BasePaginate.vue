@@ -1,16 +1,19 @@
 <script setup>
 import { ref } from "vue";
 
-const currentPage = ref(1);
-const onClickHandler = page => {
-  console.log(page);
-};
+const props = defineProps({
+  page: Number,
+  totalItems: Number,
+  onClickHandler: Function,
+});
+
+const currentPage = ref(props.page);
 </script>
 
 <template>
   <div style="width: 50%; margin: auto; display: flex; justify-content: center">
     <vue-awesome-paginate
-      :total-items="50"
+      :total-items="totalItems"
       :items-per-page="5"
       :max-pages-shown="5"
       v-model="currentPage"
@@ -22,6 +25,7 @@ const onClickHandler = page => {
 <style>
 .pagination-container {
   width: 100%;
+  justify-content: center;
   display: flex;
   column-gap: 10px;
 }

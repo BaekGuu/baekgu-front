@@ -1,22 +1,49 @@
 <script setup>
-defineProps({
+import { getBarrierFreeInfo } from "@/api/data";
+import NoImage from "@/assets/img/noimage.png";
+import { OK } from "@/constant/status";
+import { barrierFreeEmoji } from "@/util/types";
+import { onMounted, onUnmounted, ref } from "vue";
+
+const props = defineProps({
+  id: String,
   imageUrl: String,
   title: String,
   addr: String,
 });
+
+const icons = ref([]);
+
+onMounted(async () => {
+  const { data, status } = await getBarrierFreeInfo(props.id);
+  if (status === OK) {
+    Object.keys(data.response.body.items.item[0]).forEach(ele => {
+      data.response.body.items.item[0][ele] &&
+        data.response.body.items.item[0][ele] !== "contentid" &&
+        icons.value.push(barrierFreeEmoji[ele]);
+    });
+  }
+});
+
+onUnmounted(() => (icons.value = []));
+console.log(icons);
 </script>
 
 <template>
   <div class="card">
     <div class="image-container">
-      <img :src="imageUrl" :alt="title" />
+      <img
+        :src="imageUrl ? imageUrl : NoImage"
+        :alt="title"
+        :style="imageUrl && 'object-fit: cover'"
+      />
     </div>
     <div class="text-container">
       <h1>{{ title }}</h1>
       <p>{{ addr }}</p>
+
       <div class="icons">
-        <div class="icon">♿</div>
-        <div class="icon">👪</div>
+        <span v-for="icon in icons" :key="icon">{{ icon }}</span>
       </div>
     </div>
   </div>
@@ -27,13 +54,22 @@ defineProps({
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 30%;
+  width: 100%;
+  height: fit-content;
+  max-width: 30%;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  margin: 2rem 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .image-container {
@@ -42,41 +78,44 @@ defineProps({
 
 .image-container img {
   width: 100%;
-  height: auto;
+  height: 200px;
   display: block;
+  object-fit: contain;
 }
 
 .text-container {
   width: 90%;
   background-color: white;
-  text-align: start;
+  text-align: center;
+  padding: 1rem;
 }
 
 .text-container h1 {
   margin: 0.5rem 0;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .text-container p {
   margin: 0.5rem 0;
-  color: #555;
+  color: #777;
+  font-size: 1rem;
 }
 
 .icons {
   display: flex;
-  justify-content: end;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
-  margin: 0.8rem 0;
+  margin-top: 1rem;
 }
 
-.icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: #ccc;
-  font-size: 1.5rem;
+.icons span {
+  font-size: 1.2rem;
 }
 </style>

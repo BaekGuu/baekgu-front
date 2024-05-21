@@ -62,21 +62,20 @@ watch(dropdownOpen, () => {
 
 <style scoped>
 .select-container {
-  margin: 0.8rem 0;
   position: relative;
+  width: 40%;
 }
 
 .custom-select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  padding: 0.8rem 0;
   font-size: 1rem;
   border: 1px solid #7aa2ce;
   border-radius: 5px;
   background-color: #fff;
   cursor: pointer;
+  padding: 0.8rem 1rem;
   transition:
     border-color 0.3s,
     box-shadow 0.3s;
@@ -89,7 +88,6 @@ watch(dropdownOpen, () => {
   outline: none;
 }
 
-.custom-select span,
 svg {
   margin: 0 1rem;
 }
