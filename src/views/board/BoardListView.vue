@@ -4,9 +4,9 @@ import { onMounted, ref } from "vue";
 import router from "@/router";
 import { getBoardList } from "@/api/board";
 import { OK } from "@/constant/status";
+import BasePaginate from "@/components/BasePaginate.vue";
 
 const boards = ref([]);
-const pages = ref(10);
 const currentPage = ref(1);
 
 onMounted(async () => {
@@ -62,14 +62,12 @@ const handleClickPageNum = pageNum => {
         </tbody>
       </table>
       <div class="paging">
-        <span
-          v-for="page in pages"
-          :key="page"
-          :class="currentPage === page ? 'primary bold' : ''"
-          style="cursor: pointer"
-          @click="handleClickPageNum(page)"
-          >{{ page }}</span
-        >
+        <BasePaginate
+          v-if="boards.length > 0"
+          :total-items="boards.length"
+          :on-click-handler="handleClickPageNum"
+          :page="currentPage"
+        />
       </div>
     </div>
   </main>
