@@ -238,7 +238,6 @@ section {
 .checkbox-container {
   display: flex;
   align-items: center;
-  cursor: pointer;
 }
 
 .search-result p {

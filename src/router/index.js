@@ -5,6 +5,10 @@ import BoardListView from "@/views/board/BoardListView.vue";
 import BoardDetailView from "@/views/board/BoardDetailView.vue";
 import BoardRegistView from "@/views/board/BoardRegistView.vue";
 import BoardEditView from "@/views/board/BoardEditView.vue";
+import { getCookie } from "@/util/cookies";
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification();
 
 const router = createRouter({
   linkActiveClass: "active",
@@ -41,6 +45,21 @@ const router = createRouter({
       component: BoardEditView,
     },
   ],
+});
+
+const needLogin = ["/board", "/search"];
+
+router.beforeEach((to, from, next) => {
+  if (needLogin.includes(to.path) && !getCookie("userId")) {
+    notify({
+      type: "error",
+      title: "회원 전용 메뉴 입니다!",
+      text: "로그인을 먼저 진행해 주세요.",
+    });
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;

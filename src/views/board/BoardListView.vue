@@ -1,26 +1,15 @@
 <script setup>
 import BaseButton from "@/components/BaseButton.vue";
-import { getCookie } from "@/util/cookies";
-import { useNotification } from "@kyvg/vue3-notification";
 import { onMounted, ref } from "vue";
 import router from "@/router";
 import { getBoardList } from "@/api/board";
 import { OK } from "@/constant/status";
-
-const { notify } = useNotification();
 
 const boards = ref([]);
 const pages = ref(10);
 const currentPage = ref(1);
 
 onMounted(async () => {
-  if (!getCookie("username")) {
-    notify({
-      type: "error",
-      title: "회원 전용 메뉴 입니다!",
-      text: "먼저 로그인을 진행 해주세요 :)",
-    });
-  }
   const { status, data } = await getBoardList();
   if (status === OK) boards.value = data;
 });
