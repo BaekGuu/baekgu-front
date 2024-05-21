@@ -1,16 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import AppFooter from "./components/layout/AppFooter.vue";
+import AppHeader from "./components/layout/AppHeader.vue";
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">메인화면</RouterLink>
-      <RouterLink to="/board">게시판</RouterLink>
-    </nav>
-  </header>
-
+  <AppHeader />
   <RouterView />
+  <AppFooter />
+
+  <notifications position="top center" width="50%" />
 </template>
 
 <style scoped></style>

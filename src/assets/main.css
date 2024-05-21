@@ -1,31 +1,31 @@
 @font-face {
-  font-family: 'Freesentation-3Light';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2')
-    format('woff2');
+  font-family: "Freesentation-3Light";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-3Light.woff2")
+    format("woff2");
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Freesentation-4Regular';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2')
-    format('woff2');
+  font-family: "Freesentation-4Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-4Regular.woff2")
+    format("woff2");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Freesentation-7Bold';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2')
-    format('woff2');
+  font-family: "Freesentation-7Bold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-7Bold.woff2")
+    format("woff2");
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Freesentation-8ExtraBold';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-8ExtraBold.woff2')
-    format('woff2');
+  font-family: "Freesentation-8ExtraBold";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/Freesentation-8ExtraBold.woff2")
+    format("woff2");
   font-weight: 800;
   font-style: normal;
 }
@@ -33,9 +33,145 @@
 body {
   margin: 0;
   padding: 0;
-  width: 100vw;
 }
 
 #app {
-  font-family: 'Freesentation-4Regular';
+  font-family: "Freesentation-4Regular";
+  font-size: 16px;
+}
+
+.page {
+  padding-top: 135px;
+  min-height: 100vh;
+  position: relative;
+}
+
+a {
+  color: #212121;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:visited {
+  color: #212121;
+}
+
+button {
+  cursor: pointer;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  padding: 0.8rem 1rem;
+  outline: none;
+  border: 0.0625rem solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: "Freesentation-4Regular";
+}
+
+input[type="text"]:focus,
+input[type="text"]:hover {
+  border-color: #ddd;
+  box-shadow: 0 0 5px #ddd;
+  outline: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.inner {
+  width: 60%;
+  margin: auto;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.light {
+  font-family: "Freesentation-3Light";
+}
+
+.reg {
+  font-family: "Freesentation-4Regular";
+}
+
+.bold {
+  font-family: "Freesentation-7Bold";
+}
+
+.extrabold {
+  font-family: "Freesentation-8ExtraBold";
+}
+
+.point {
+  color: #7aa2ce;
+}
+
+.assistant {
+  color: #fae2b9;
+}
+
+.primary {
+  color: #ff747c;
+}
+
+.gray {
+  color: #606060;
+}
+
+.white {
+  color: #fff;
+}
+
+.black {
+  color: #212121;
+}
+
+.bg-point {
+  background-color: #7aa2ce;
+}
+
+.bg-assistant {
+  background-color: #fae2b9;
+}
+
+.bg-primary {
+  background-color: #ff747c;
+}
+
+.bg-gray {
+  background-color: #606060;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-black {
+  background-color: #212121;
+}
+
+.hover:hover {
+  color: #7aa2ce;
+}
+
+.notification-title {
+  font-size: 1.2rem;
+}
+
+.notification-content {
+  font-size: 1rem;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
 }
