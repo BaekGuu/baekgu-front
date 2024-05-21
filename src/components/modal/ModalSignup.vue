@@ -7,7 +7,7 @@ const { member, checkPassword, handleClickCheckId, handleClickCheckNickName, han
   useMemberStore();
 
 const validation = ref({
-  id: true,
+  id: false,
   nickName: false,
   password: false,
 });
