@@ -4,7 +4,18 @@
 
 # 💡 About
 
-무장애 여행 사이트
+장애인, 고령자, 임산부, 영유아 가족 등을 포함한 ‘모든 관광객’이
+이동의 불편 및 관광 활동의 제약 없이 이용할 수 있는 여행을 떠날 수 있도록 도와주는 사이트입니다.
+우리네 토종 강아지 진돗개 백구와 함께 아무런 걱정 없이 여행을 떠나보세요!
+
+
+# 🌱 Teck Skill
+- Main: `Vue.js`
+- Dev: `Vite`
+- Formatter & Code Style: `ESLint` `Prettier`
+- Deploy: `AWS S3` `Github Actions` 
+- Installed Libraries: `@heroicons/vue` `notivue`
+
 
 # 📌 Convention
 
@@ -12,9 +23,7 @@
 
 `main`: main 브랜치 (배포)
 
-`develop`: feature 브랜치에서 기능 개발이 완료된 브랜치 병합
-
-`feature/기능`: 기능 개발을 위한 브랜치
+`develop`: 개발이 완료된 기능 및 화면
 
 ## 💬 Commit Type
 
