@@ -10,6 +10,7 @@ import { OK } from "@/constant/status";
 import { mainCategory, subCategory } from "@/util/types";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import { ref } from "vue";
+import router from "@/router";
 
 const { notify } = useNotification();
 
@@ -83,7 +84,7 @@ const handlerClickPageNum = async page => {
   <main class="page">
     <div class="inner">
       <section class="search">
-        <input type="text" placeholder="여행지 키워드 검색" v-model="keyword" />
+        <input type="text" placeholder="여행지 키워드 검색 (필수)" v-model="keyword" />
         <p class="gray">여행하고 싶은 지역을 골라주세요.</p>
         <div class="selects">
           <BaseSelect
@@ -141,6 +142,7 @@ const handlerClickPageNum = async page => {
               :imageUrl="result.firstimage"
               :title="result.title"
               :addr="result.addr1.split(' ').slice(0, 2).join(' ')"
+              @click="() => router.push('/detail/' + result.contentid)"
             />
           </div>
         </div>

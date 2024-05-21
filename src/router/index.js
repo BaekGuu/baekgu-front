@@ -5,6 +5,7 @@ import BoardListView from "@/views/board/BoardListView.vue";
 import BoardDetailView from "@/views/board/BoardDetailView.vue";
 import BoardRegistView from "@/views/board/BoardRegistView.vue";
 import BoardEditView from "@/views/board/BoardEditView.vue";
+import SpotView from "@/views/SpotView.vue";
 import { getCookie } from "@/util/cookies";
 import { useNotification } from "@kyvg/vue3-notification";
 
@@ -24,6 +25,7 @@ const router = createRouter({
       name: "search",
       component: SearchView,
     },
+    { path: "/detail/:id", name: "spot", component: SpotView },
     {
       path: "/board",
       name: "board",
