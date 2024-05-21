@@ -23,17 +23,25 @@ const isSectionOpen = ref(true);
 const currentPage = ref(1);
 const searchResults = ref([]);
 
-const fetchCityList = async () => {
+const handleClickCitySelect = async () => {
   const { data, status } = await getCityList();
   if (status === OK) cities.value = data.response.body.items.item;
 };
 
-const fetchDistrictList = async code => {
+const handleSelectCity = async code => {
   const { data, status } = await getDistrictList(code);
   if (status === OK) {
     districts.value = data.response.body.items.item;
     areaCode.value = code;
   }
+};
+
+const handleClickDistrictSelect = () => {
+  if (areaCode.value === 0)
+    notify({
+      type: "warn",
+      text: "시도를 먼저 선택해 주세요!",
+    });
 };
 
 const handleSelectDistrict = code => {
@@ -81,12 +89,13 @@ const handlerClickPageNum = async page => {
           <BaseSelect
             defaultSelected="시도 선택"
             :options="cities"
-            @handleClickSelect="fetchCityList"
-            @handleSelectOption="fetchDistrictList"
+            @handleClickSelect="handleClickCitySelect"
+            @handleSelectOption="handleSelectCity"
           />
           <BaseSelect
             defaultSelected="시군구 선택"
             :options="districts"
+            @handleClickSelect="handleClickDistrictSelect"
             @handleSelectOption="handleSelectDistrict"
           />
           <BaseButton text="검색" :width="15" :isActive="true" :on-click="handleClickSearch" />
@@ -115,7 +124,7 @@ const handlerClickPageNum = async page => {
       </section>
 
       <section class="search-result">
-        <p v-if="searchResults.length === 0">검색 결과가 없습니다😥</p>
+        <p v-if="!searchResults">검색 결과가 없습니다😥</p>
         <div v-else>
           <p>
             총 <span class="primary bold">{{ searchResults.length }}</span
@@ -138,7 +147,7 @@ const handlerClickPageNum = async page => {
       </section>
 
       <BasePaginate
-        v-if="searchResults.length > 0"
+        v-if="searchResults"
         :total-items="searchResults.length"
         :on-click-handler="handlerClickPageNum"
         :page="currentPage"

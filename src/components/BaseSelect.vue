@@ -26,7 +26,7 @@ watch(dropdownOpen, () => {
       @click="
         () => {
           emit('handleClickSelect');
-          dropdownOpen = true;
+          dropdownOpen = !dropdownOpen;
         }
       "
     >
