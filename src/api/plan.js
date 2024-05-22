@@ -51,3 +51,25 @@ export const deleteSpotFromPlan = async id => {
     return error;
   }
 };
+
+export const addDateToPlan = async planId => {
+  const url = "/plan/date/regist";
+  try {
+    const response = await clientInstance.post(url, { planId: planId });
+  
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteDateToPlan = async planId => {
+  const url = "/plan/date/regist";
+  try {
+    const response = await clientInstance.post(url, { planId: planId });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

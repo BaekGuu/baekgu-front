@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { deleteSpotFromPlan, getPlanDetail } from "../../api/plan";
+import { addDateToPlan, deleteDateToPlan, deleteSpotFromPlan, getPlanDetail } from "../../api/plan";
 import { useRoute } from "vue-router";
 import { OK } from "../../constant/status";
 import {
   ChevronDoubleDownIcon,
+  ChevronDoubleUpIcon,
   PlusCircleIcon,
   TrashIcon,
   XMarkIcon,
@@ -22,12 +23,33 @@ const latLngList = ref([
 const route = useRoute();
 const { notify } = useNotification();
 
-const plan = ref({ title: "", description: "" });
+const plan = ref({ id: "", title: "", description: "" });
 const plansByDate = ref([]);
 const selectedDay = ref(-1);
+const isOpenMap = ref(false);
 
 const handleClickDay = day => {
   selectedDay.value = day;
+};
+
+const handleClickShowMap = () => {
+  if (selectedDay.value === -1) {
+    notify({ type: "warn", text: "날짜를 선택해 주세요!" });
+    return;
+  }
+  isOpenMap.value = !isOpenMap.value;
+};
+
+const handleClickAddDate = async id => {
+  const { status } = await addDateToPlan(id);
+  if (status === OK) alert("날짜 추가!");
+};
+
+const handleClickDeleteDate = async id => {
+  const flag = confirm("정말 삭제?");
+  if (!flag) return;
+  const { status } = await deleteDateToPlan(id);
+  if (status === OK) alert("날짜 삭제!");
 };
 
 const handleClickDeleteSpot = async id => {
@@ -42,7 +64,9 @@ const handleClickDeleteSpot = async id => {
 onMounted(async () => {
   const { data, status } = await getPlanDetail(route.path.split("/")[2]);
   if (status === OK) {
-    (plan.value.title = data.planTitle), (plan.value.description = data.description);
+    plan.value.title = data.planTitle;
+    plan.value.description = data.description;
+    plan.value.id = data.id;
     plansByDate.value = data.planDate;
   }
 
@@ -57,7 +81,12 @@ onMounted(async () => {
         <h1>{{ plan.title }}</h1>
         <span>{{ plan.description }}</span>
       </section>
-      <section class="plans">
+
+      <div v-if="plansByDate.length === 0">
+        <p>이 계획은 비어있어요😥 여행지를 검색하고, 나만의 계획을 세워 보세요!</p>
+        <a href="/search" style="text-decoration: underline">여행지 검색으로 이동</a>
+      </div>
+      <section v-else class="plans">
         <div v-for="(planDate, index) in plansByDate" :key="index" class="plan">
           <CheckCircleIcon
             v-if="index === selectedDay"
@@ -79,20 +108,23 @@ onMounted(async () => {
               <XMarkIcon @click="handleClickDeleteSpot(spot.id)" />
             </div>
           </div>
-          <TrashIcon class="trash-icon" />
+          <TrashIcon class="trash-icon" @click="() => handleClickDeleteDate(plan.id)" />
         </div>
+
         <div class="button-container">
-          <div class="button pointer">
+          <div class="button pointer" @click="() => handleClickAddDate(plan.id)">
             <p>여행 날짜 추가하기</p>
             <PlusCircleIcon />
           </div>
-          <div class="button pointer">
+          <div class="button pointer" @click="handleClickShowMap">
             <p>선택한 날짜로 경로 보기</p>
-            <ChevronDoubleDownIcon />
+            <ChevronDoubleUpIcon v-if="isOpenMap" />
+            <ChevronDoubleDownIcon v-else />
           </div>
         </div>
       </section>
-      <section>
+
+      <section v-if="isOpenMap">
         <div class="map">
           <KakaoMap :lat="33.450701" :lng="126.570667" style="width: 100%">
             <KakaoMapPolyline :latLngList="latLngList" />
