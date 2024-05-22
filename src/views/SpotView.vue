@@ -5,7 +5,11 @@ import { onMounted, ref, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { barrierFreeInfo } from "@/util/types.js";
 import { KakaoMap, KakaoMapMarker } from "vue3-kakao-maps";
-import { ArrowUpCircleIcon } from "@heroicons/vue/24/solid";
+import { ShoppingBagIcon } from "@heroicons/vue/24/solid";
+import BaseModal from "@/components/BaseModal.vue";
+import { useSpotStore } from "@/stores/spot-store";
+
+const { setSpotId } = useSpotStore();
 
 const route = useRoute();
 const isLoading = ref(true);
@@ -13,11 +17,13 @@ const scrollY = ref(window?.scrollY);
 const spot = ref({});
 const barrierfree = ref({});
 const activeMenu = ref("menu1");
+const isOpenAddPlanModal = ref(false);
 
 const fetchDetail = async () => {
   const { data, status } = await getSpotDetail(route.params.id);
   if (status === OK) {
     spot.value = data.response.body.items.item[0];
+    setSpotId(data.response.body.items.item[0].contentid);
     isLoading.value = false;
   }
 };
@@ -121,12 +127,23 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <BaseModal
+    v-if="isOpenAddPlanModal"
+    :modal-type="`여행 계획에 &quot;${spot.title}&quot; 추가하기`"
+    @close-modal="isOpenAddPlanModal = fasle"
+  />
   <div class="page" id="top">
     <div v-if="isLoading">로딩 중..</div>
     <div v-else class="inner" id="content">
       <div class="title">
-        <h1>{{ spot.title }}</h1>
-        <p>{{ spot.addr1.split(" ").slice(0, 2).join(" ") }}</p>
+        <div>
+          <h1>{{ spot.title }}</h1>
+          <p>{{ spot.addr1.split(" ").slice(0, 2).join(" ") }}</p>
+        </div>
+        <div class="add-plan pointer" @click="isOpenAddPlanModal = true">
+          <span>내 계획에 추가하기</span>
+          <ShoppingBagIcon />
+        </div>
       </div>
 
       <div :class="scrollY > 100 ? 'top-menu' : 'menu'">
@@ -207,9 +224,6 @@ onUnmounted(() => {
         </div>
       </section>
     </div>
-    <a href="#top">
-      <ArrowUpCircleIcon class="to-top point pointer" @click="scrollToTargetMenu" />
-    </a>
   </div>
 </template>
 
@@ -217,23 +231,48 @@ onUnmounted(() => {
 .page {
   padding-top: 100px;
 }
+
 .inner {
   padding: 0 20px;
 }
+
+section {
+  margin-bottom: 8rem;
+}
+
 .title {
   text-align: center;
   margin: 2rem 0;
 }
+
 h1 {
   margin: 0;
 }
+
+.add-plan {
+  display: flex;
+  position: absolute;
+  right: 20%;
+  top: 200px;
+}
+
+.add-plan:hover {
+  text-decoration: underline;
+}
+
+.add-plan svg {
+  width: 20px;
+}
+
 .top-menu,
 .menu {
   display: flex;
   background-color: #eeeeee;
   border-radius: 10px;
   margin: 2rem 0;
+  font-size: 1.2rem;
 }
+
 .top-menu {
   position: fixed;
   top: 67px;
@@ -242,18 +281,23 @@ h1 {
   margin: 0;
   z-index: 100;
 }
+
 .menu {
   position: sticky;
   top: 67px;
 }
-a {
+
+.menu a,
+.top-menu a {
   width: 25%;
   padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-a.active {
+
+.menu a.active,
+.top-menu a.active {
   color: #ff747c;
   border-radius: 10px;
   border: solid 5px #ff747c;
@@ -262,27 +306,25 @@ a.active {
   font-weight: 700;
   z-index: 10;
 }
+
 img {
   width: 100%;
   height: 500px;
 }
+
 hr {
   border: none;
   height: 2px;
   background-color: #000;
   margin: 1rem 0;
 }
+
 .basic p {
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.5rem;
 }
+
 .map {
   width: 100%;
-}
-.to-top {
-  position: relative;
-  bottom: 3vh;
-  left: 88vw;
-  width: 8%;
 }
 </style>

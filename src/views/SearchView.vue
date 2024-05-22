@@ -4,7 +4,6 @@ import BaseButton from "@/components/BaseButton.vue";
 import BaseSelect from "@/components/BaseSelect.vue";
 import BaseCard from "@/components/BaseCard.vue";
 import BasePaginate from "@/components/BasePaginate.vue";
-import BaseRoundBox from "@/components/BaseRoundBox.vue";
 import { useNotification } from "@kyvg/vue3-notification";
 import { OK } from "@/constant/status";
 import { mainCategory, subCategory } from "@/util/types";
@@ -117,7 +116,11 @@ const handlerClickPageNum = async page => {
             <span class="category-title">{{ category }}</span>
             <div class="sub-category">
               <div v-for="sub in subCategory[category]" :key="sub" class="checkbox-container">
-                <BaseRoundBox :text="sub" :primary="false" />
+                <div class="bg-white round-box">
+                  <span class="black">
+                    {{ sub }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -249,6 +252,21 @@ section {
 .checkbox-container {
   display: flex;
   align-items: center;
+}
+
+svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.round-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid #7aa2ce;
+  border-radius: 15px;
+  transition: background-color 0.3s;
+  padding: 0.5rem 1rem;
 }
 
 .search-result p {

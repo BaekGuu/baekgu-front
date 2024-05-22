@@ -29,11 +29,6 @@ const handleClickOpenUserSection = () => {
   isOpenUserSection.value = !isOpenUserSection.value;
 };
 
-watch(isOpenModal, () => {
-  if (isOpenModal.value) document.body.style.overflow = "hidden";
-  else document.body.style.overflow = "auto";
-});
-
 watch(isOpenUserSection, () => {
   const userInfoSection = document.getElementById("userInfoSection");
   const userInfo = document.getElementById("userInfo");
@@ -61,7 +56,6 @@ const isBoardRoute = computed(() => {
     v-if="isOpenModal"
     :modal-type="modalType"
     @close-modal="closeModal"
-    @open-modal="openModal"
   />
   <header
     class="bg-white"
