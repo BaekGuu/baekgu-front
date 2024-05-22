@@ -53,7 +53,7 @@ const router = createRouter({
   ],
 });
 
-const needLogin = ["/board", "/search", "/detail"];
+const needLogin = ["/board", "/search", "/detail", "/plan"];
 
 router.beforeEach((to, from, next) => {
   if (needLogin.includes(to.path) && !getCookie("userId")) {

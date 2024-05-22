@@ -33,6 +33,7 @@ onMounted(async () => {
 <template>
   <form @submit.prevent="handleSubmitAddSpotToPlan">
     <div class="plans">
+      <!-- TODO: 여행 계획 폴더가 없으면 여행 계획 화면으로 이동하는 글귀? -->
       <p>이 여행지를 추가하고 싶은 여행 계획을 선택해 주세요.</p>
       <BaseCheckBox
         v-for="plan in plans"
