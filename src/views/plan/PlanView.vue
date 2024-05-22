@@ -1,21 +1,28 @@
 <script setup>
 import { getPlanList } from "@/api/plan";
 import Image1 from "@/assets/img/travel1.png";
-import Image2 from "@/assets/img/travel1.png";
-import Image3 from "@/assets/img/travel1.png";
-import Image4 from "@/assets/img/travel1.png";
-import Image5 from "@/assets/img/travel1.png";
-import Image6 from "@/assets/img/travel1.png";
-import Image7 from "@/assets/img/travel1.png";
+import Image2 from "@/assets/img/travel2.png";
+import Image3 from "@/assets/img/travel3.png";
+import Image4 from "@/assets/img/travel4.png";
+import Image5 from "@/assets/img/travel5.png";
+import Image6 from "@/assets/img/travel6.png";
+import Image7 from "@/assets/img/travel7.png";
 import BaseModal from "@/components/BaseModal.vue";
 import { OK } from "@/constant/status";
 import { PlusCircleIcon } from "@heroicons/vue/24/solid";
 
+// const route = useRoute();
+
 import { onMounted, ref } from "vue";
+import router from "../../router";
 
 const plans = ref([]);
 const images = ref([Image1, Image2, Image3, Image4, Image5, Image6, Image7]);
 const isOpenAddPlanModal = ref(false);
+
+const getRandomImage = () => {
+  return images.value[Math.floor(Math.random() * images.value.length)];
+};
 
 onMounted(async () => {
   const { data, status } = await getPlanList();
@@ -31,11 +38,18 @@ onMounted(async () => {
   />
   <main class="page">
     <div class="inner">
-      <span>*커버 이미지는 AI로 생성되어 임의로 지정 됩니다. </span>
+      <span style="color: #aaa; font-weight: 400"
+        >*커버 이미지는 AI로 생성 되어 임의로 지정 됩니다.
+      </span>
       <div class="cards">
-        <div class="card pointer" v-for="plan in plans" :key="plan.id">
+        <div
+          class="card pointer"
+          v-for="plan in plans"
+          :key="plan.id"
+          @click="router.push('/plan/' + plan.id)"
+        >
           <div class="image-container">
-            <img :src="images[Math.floor(Math.random() * images.length)]" alt="커버 이미지" />
+            <img :src="getRandomImage()" alt="커버 이미지" />
           </div>
           <div class="text-container">
             <h1>{{ plan.planTitle }}</h1>

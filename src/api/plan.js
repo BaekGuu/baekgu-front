@@ -24,6 +24,7 @@ export const addSpotToPlan = async contentId => {
 export const addPlan = async requestObj => {
   const url = `/plan/regist`;
   try {
+    console.log("요청", requestObj);
     const response = await clientInstance.post(url, requestObj);
     return response;
   } catch (error) {

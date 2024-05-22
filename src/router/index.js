@@ -8,7 +8,7 @@ import BoardEditView from "@/views/board/BoardEditView.vue";
 import SpotView from "@/views/SpotView.vue";
 import { getCookie } from "@/util/cookies";
 import { useNotification } from "@kyvg/vue3-notification";
-import PlanView from "@/views/PlanView.vue";
+import PlanView from "@/views/plan/PlanView.vue";
 
 const { notify } = useNotification();
 

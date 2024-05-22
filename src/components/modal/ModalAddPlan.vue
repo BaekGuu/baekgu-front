@@ -5,19 +5,25 @@ import { getCookie } from "../../util/cookies";
 import { addPlan } from "../../api/plan";
 import { OK } from "../../constant/status";
 import { useNotification } from "@kyvg/vue3-notification";
+import { reload } from "../../util/custom-router";
 
 const { notify } = useNotification();
 
 const plan = ref({
-  memberId: getCookie("userId"),
   planTitle: "",
   description: "",
 });
 
 const handleSubmitAddPlan = async () => {
-    console.log(plan.value)
-  const { status } = await addPlan(plan);
-  if (status === OK) notify({ type: "success", text: "새로운 여행 계획을 세워보세요!" });
+  const { status } = await addPlan({
+    memberId: getCookie("userId"),
+    planTitle: plan.value.planTitle,
+    description: plan.value.description,
+  });
+  if (status === OK) {
+    notify({ type: "success", text: "새로운 여행 계획을 세워보세요!" });
+    reload();
+  }
 };
 </script>
 
