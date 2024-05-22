@@ -60,7 +60,7 @@ const handleClickSearch = async () => {
     currentPage.value,
   );
   if (status === OK) {
-    searchResults.value = data.response.body.items.item;
+    searchResults.value = await data.response.body.items.item;
   }
 };
 

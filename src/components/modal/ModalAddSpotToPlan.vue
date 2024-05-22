@@ -7,15 +7,21 @@ import BaseCheckBox from "../BaseCheckBox.vue";
 import { useSpotStore } from "@/stores/spot-store";
 import { useNotification } from "@kyvg/vue3-notification";
 
-const { spot } = useSpotStore();
+const { spot, saveSpot } = useSpotStore();
 const { notify } = useNotification();
 
 const plans = ref([]);
-const isSelected = ref(false);
+const selectedPlan = ref(false);
 
 const handleSubmitAddSpotToPlan = async () => {
-  const { status } = await addSpotToPlan(spot.contentId);
-  if (status === OK) notify({ type: "success", text: "여행 계획에 추가 되었습니다!" });
+  const flag = await saveSpot();
+  if (flag) {
+    const { status } = await addSpotToPlan({
+      contentId: spot.contentId,
+      planId: selectedPlan.value,
+    });
+    if (status === OK) notify({ type: "success", text: "여행 계획에 추가 되었습니다!" });
+  }
 };
 
 onMounted(async () => {
@@ -32,8 +38,8 @@ onMounted(async () => {
         v-for="plan in plans"
         :key="plan.id"
         :text="plan.planTitle"
-        :is-checked="isSelected"
-        @click="isSelected = !isSelected"
+        :is-checked="selectedPlan === plan.id"
+        @click="selectedPlan = plan.id"
       />
     </div>
 
@@ -47,6 +53,10 @@ form {
   flex-direction: column;
   padding: 2rem;
   gap: 1rem;
+}
+
+.checkbox {
+  margin: 0.5rem 0;
 }
 
 .plans p {

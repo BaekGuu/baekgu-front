@@ -9,7 +9,7 @@ import { ShoppingBagIcon } from "@heroicons/vue/24/solid";
 import BaseModal from "@/components/BaseModal.vue";
 import { useSpotStore } from "@/stores/spot-store";
 
-const { setSpotId } = useSpotStore();
+const { setSpotDetail,setSpotBarrierFree } = useSpotStore();
 
 const route = useRoute();
 const isLoading = ref(true);
@@ -22,8 +22,8 @@ const isOpenAddPlanModal = ref(false);
 const fetchDetail = async () => {
   const { data, status } = await getSpotDetail(route.params.id);
   if (status === OK) {
-    spot.value = data.response.body.items.item[0];
-    setSpotId(data.response.body.items.item[0].contentid);
+    spot.value = data.response?.body.items.item[0];
+    setSpotDetail(data.response?.body.items.item[0]);
     isLoading.value = false;
   }
 };
@@ -31,7 +31,8 @@ const fetchDetail = async () => {
 const fetchBarrierFree = async () => {
   const { data, status } = await getBarrierFreeInfo(route.params.id);
   if (status === OK) {
-    barrierfree.value = data.response.body.items.item[0];
+    barrierfree.value = data.response?.body.items.item[0];
+    setSpotBarrierFree(data.response?.body.items.item[0]);
   }
 };
 

@@ -1,3 +1,5 @@
+import { addSpot } from "@/api/plan";
+import { OK } from "@/constant/status";
 import { defineStore } from "pinia";
 
 export const useSpotStore = defineStore("spot", {
@@ -8,6 +10,10 @@ export const useSpotStore = defineStore("spot", {
       title: "",
       image: "",
       tel: "",
+      mapx: "",
+      mapy: "",
+      homepage: "",
+      overview: "",
       parking: "",
       route: "",
       publictransport: "",
@@ -36,16 +42,43 @@ export const useSpotStore = defineStore("spot", {
       lactationroom: "",
       babysparechair: "",
       infantsfamilyetc: "",
-      id: 0, //
-      planId: 0,
-      dateId: 0,
-      priority: 0,
     },
   }),
   actions: {
-    setSpotId(id) {
-      this.spot.contentId = id;
-      console.log(this.spot);
+    setSpotDetail(data) {
+      this.spot = {
+        ...this.spot,
+        contentId: parseInt(data.contentid),
+        address: data.addr1,
+        title: data.title,
+        image: data.firstimage,
+        tel: data.tel,
+        mapx: data.mapx,
+        mapy: data.mapy,
+        homepage: data.homepage,
+        overview: data.overview,
+      };
+    },
+    setSpotBarrierFree(data) {
+      const filters = [
+        "contentid",
+        "addr1",
+        "title",
+        "firstimage",
+        "tel",
+        "mapx",
+        "mapy",
+        "homepage",
+        "overview",
+      ];
+      Object.keys(data).forEach(key => {
+        if (!filters.includes(key)) this.spot[key] = data[key];
+      });
+    },
+    async saveSpot() {
+      const { status } = await addSpot(this.spot);
+      if (status === OK) return true;
+      else false;
     },
   },
 });

@@ -13,6 +13,7 @@ import {
 import { CheckCircleIcon } from "@heroicons/vue/24/solid";
 import { useNotification } from "@kyvg/vue3-notification";
 import { KakaoMap, KakaoMapPolyline } from "vue3-kakao-maps";
+import NoImage from "@/assets/img/noimage.png";
 
 const latLngList = ref([
   { lat: 33.45, lng: 126.571 },
@@ -101,10 +102,7 @@ onMounted(async () => {
           </h3>
           <div class="spots">
             <div v-for="spot in planDate" :key="spot.contentId" class="spot pointer">
-              <img
-                :src="spot.image ? spot.image : '../../assets/img/noimage.png'"
-                :alt="spot.title"
-              />
+              <img :src="spot.image ? spot.image : NoImage" :alt="spot.title" />
               <XMarkIcon @click="handleClickDeleteSpot(spot.id)" />
             </div>
           </div>
@@ -203,6 +201,7 @@ svg {
 
 .spot img {
   border-radius: 10px;
+  background-color: #fff;
 }
 
 .spot img:hover {

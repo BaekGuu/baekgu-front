@@ -11,21 +11,30 @@ export const getPlanList = async () => {
   }
 };
 
-export const addSpotToPlan = async contentId => {
-  const url = `/plan/place/regist`;
+export const addSpot = async params => {
+  const url = "/place/regist";
   try {
-    const response = await clientInstance.post(url, contentId);
+    const response = await clientInstance.post(url, params);
     return response;
   } catch (error) {
     return error;
   }
 };
 
-export const addPlan = async requestObj => {
+export const addSpotToPlan = async params => {
+  const url = `/plan/place/regist`;
+  try {
+    const response = await clientInstance.post(url, params);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const addPlan = async params => {
   const url = `/plan/regist`;
   try {
-    console.log("요청", requestObj);
-    const response = await clientInstance.post(url, requestObj);
+    const response = await clientInstance.post(url, params);
     return response;
   } catch (error) {
     return error;
@@ -56,7 +65,7 @@ export const addDateToPlan = async planId => {
   const url = "/plan/date/regist";
   try {
     const response = await clientInstance.post(url, { planId: planId });
-  
+
     return response;
   } catch (error) {
     return error;
