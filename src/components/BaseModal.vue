@@ -5,6 +5,7 @@ import ModalProfileEdit from "./modal/ModalProfileEdit.vue";
 import ModalProfileView from "./modal/ModalProfileView.vue";
 import ModalSignup from "./modal/ModalSignup.vue";
 import ModalAddPlan from "./modal/ModalAddPlan.vue";
+import ModalAddSpotToPlan from "./modal/ModalAddSpotToPlan.vue";
 
 defineProps({
   modalType: String,
@@ -33,7 +34,8 @@ onUnmounted(() => {
         <ModalSignup v-if="modalType === '회원가입'" />
         <ModalProfileView v-if="modalType === '내 정보 보기'" />
         <ModalProfileEdit v-if="modalType === '회원 정보 수정'" />
-        <ModalAddPlan v-if="modalType.includes('여행 계획')" />
+        <ModalAddSpotToPlan v-if="modalType.startsWith('여행 계획')" />
+        <ModalAddPlan v-if="modalType.includes('새로운 여행')" />
       </div>
     </div>
   </div>

@@ -20,3 +20,13 @@ export const addSpotToPlan = async contentId => {
     return error;
   }
 };
+
+export const addPlan = async requestObj => {
+  const url = `/plan/regist`;
+  try {
+    const response = await clientInstance.post(url, requestObj);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

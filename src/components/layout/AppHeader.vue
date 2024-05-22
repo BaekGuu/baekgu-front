@@ -80,6 +80,7 @@ const isBoardRoute = computed(() => {
       <div class="inner">
         <RouterLink to="/" active-class="active" exact>백구는요,</RouterLink>
         <RouterLink to="/search" active-class="active" exact>여행지 검색</RouterLink>
+        <RouterLink to="/plan" active-class="active" exact>나의 여행</RouterLink>
         <RouterLink to="/board" :class="{ active: isBoardRoute }">게시판</RouterLink>
       </div>
     </nav>

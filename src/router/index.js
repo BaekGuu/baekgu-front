@@ -8,6 +8,7 @@ import BoardEditView from "@/views/board/BoardEditView.vue";
 import SpotView from "@/views/SpotView.vue";
 import { getCookie } from "@/util/cookies";
 import { useNotification } from "@kyvg/vue3-notification";
+import PlanView from "@/views/PlanView.vue";
 
 const { notify } = useNotification();
 
@@ -26,6 +27,7 @@ const router = createRouter({
       component: SearchView,
     },
     { path: "/detail/:id", name: "spot", component: SpotView },
+    { path: "/plan", name: "plan", component: PlanView },
     {
       path: "/board",
       name: "board",

@@ -87,6 +87,13 @@ textarea {
   resize: none;
 }
 
+textarea:focus,
+textarea:hover {
+  border-color: #ddd;
+  box-shadow: 0 0 5px #ddd;
+  outline: none;
+}
+
 .inner {
   width: 60%;
   margin: auto;

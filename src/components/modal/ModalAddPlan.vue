@@ -1,41 +1,41 @@
 <script setup>
-import { onMounted, ref } from "vue";
 import BaseButton from "../BaseButton.vue";
-import { addSpotToPlan, getPlanList } from "@/api/plan";
-import { OK } from "@/constant/status";
-import BaseCheckBox from "../BaseCheckBox.vue";
-import { useSpotStore } from "@/stores/spot-store";
+import { ref } from "vue";
+import { getCookie } from "../../util/cookies";
+import { addPlan } from "../../api/plan";
+import { OK } from "../../constant/status";
 import { useNotification } from "@kyvg/vue3-notification";
 
-const { spot } = useSpotStore();
-const {notify} = useNotification()
+const { notify } = useNotification();
 
-const plans = ref([]);
-const isSelected = ref(false);
+const plan = ref({
+  memberId: getCookie("userId"),
+  planTitle: "",
+  description: "",
+});
 
 const handleSubmitAddPlan = async () => {
-  const { status } = await addSpotToPlan(spot.contentId);
-  if(status === OK) notify({type: "success", text: "여행 계획에 추가 되었습니다!"})
+    console.log(plan.value)
+  const { status } = await addPlan(plan);
+  if (status === OK) notify({ type: "success", text: "새로운 여행 계획을 세워보세요!" });
 };
-
-onMounted(async () => {
-  const { data, status } = await getPlanList();
-  if (status === OK) plans.value = data;
-});
 </script>
 
 <template>
   <form @submit.prevent="handleSubmitAddPlan">
-    <div class="plans">
-      <p>이 여행지를 추가하고 싶은 여행 계획을 선택해 주세요.</p>
-      <BaseCheckBox
-        v-for="plan in plans"
-        :key="plan.id"
-        :text="plan.planTitle"
-        :is-checked="isSelected"
-        @click="isSelected = !isSelected"
-      />
-    </div>
+    <input
+      type="text"
+      name="plan-title"
+      id="plan-title"
+      v-model="plan.planTitle"
+      placeholder="제목"
+    />
+    <textarea
+      name="description"
+      id="description"
+      v-model="plan.description"
+      placeholder="설명"
+    ></textarea>
 
     <BaseButton text="추가하기" :is-active="true" :width="100" :type="'submit'" />
   </form>
@@ -47,10 +47,5 @@ form {
   flex-direction: column;
   padding: 2rem;
   gap: 1rem;
-}
-
-.plans p {
-  font-size: 1rem;
-  text-align: center;
 }
 </style>
