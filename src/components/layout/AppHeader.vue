@@ -53,7 +53,7 @@ watch(isOpenUserSection, () => {
 
 const isBoardRoute = computed(() => {
   return route.path.startsWith("/board");
-})
+});
 </script>
 
 <template>
@@ -63,7 +63,10 @@ const isBoardRoute = computed(() => {
     @close-modal="closeModal"
     @open-modal="openModal"
   />
-  <header class="bg-white border-bottom">
+  <header
+    class="bg-white"
+    :style="!route.path.includes('/detail') ? 'height: 135px' : 'height: 67px'"
+  >
     <main class="border-bottom">
       <div class="inner">
         <div class="logo" @click="router.push('/')">
@@ -96,7 +99,7 @@ const isBoardRoute = computed(() => {
         </div>
       </div>
     </main>
-    <nav>
+    <nav v-if="!route.path.includes('/detail')" class="border-bottom">
       <div class="inner">
         <RouterLink to="/" active-class="active" exact>백구는요,</RouterLink>
         <RouterLink to="/search" active-class="active" exact>여행지 검색</RouterLink>
@@ -112,7 +115,6 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  height: 135px;
   z-index: 10;
 }
 
