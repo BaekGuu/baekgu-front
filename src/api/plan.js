@@ -31,3 +31,23 @@ export const addPlan = async requestObj => {
     return error;
   }
 };
+
+export const getPlanDetail = async planId => {
+  const url = `/plan/detail/${planId}`;
+  try {
+    const response = await clientInstance.get(url, planId);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const deleteSpotFromPlan = async id => {
+  const url = "/plan/place/delete";
+  try {
+    const response = await clientInstance.post(url, { id: id });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

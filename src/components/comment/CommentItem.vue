@@ -6,7 +6,7 @@ import { useRoute } from "vue-router";
 
 defineProps({ comment: Object });
 
-const route = useRoute()
+const route = useRoute();
 const { loginedMember } = useMemberStore();
 const { handlerClickDelete, handlerClickUpdate } = useCommentStore();
 

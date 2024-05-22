@@ -44,8 +44,8 @@ export const useSpotStore = defineStore("spot", {
   }),
   actions: {
     setSpotId(id) {
-          this.spot.contentId = id;
-          console.log(this.spot)
+      this.spot.contentId = id;
+      console.log(this.spot);
     },
   },
 });
