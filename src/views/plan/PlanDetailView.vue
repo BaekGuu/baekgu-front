@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { getPlanDetail } from "../../api/plan";
 import { useRoute } from "vue-router";
 import { OK } from "../../constant/status";
@@ -11,26 +11,19 @@ import {
 } from "@heroicons/vue/24/solid";
 import { CheckCircleIcon } from "@heroicons/vue/24/solid";
 import { useNotification } from "@kyvg/vue3-notification";
-import { KakaoMap, KakaoMapPolyline } from "vue3-kakao-maps";
+import { KakaoMap, KakaoMapInfoWindow, KakaoMapMarker, KakaoMapPolyline } from "vue3-kakao-maps";
 import NoImage from "@/assets/img/noimage.png";
 import { usePlanStore } from "@/stores/plan-store";
-
-const latLngList = ref([
-  { lat: 33.45, lng: 126.571 },
-  { lat: 33.449, lng: 126.5705 },
-  { lat: 33.45, lng: 126.5725 },
-]);
 
 const route = useRoute();
 const { handleClickAddDate, handleClickDeleteDate, handleClickDeleteSpot } = usePlanStore();
 const { notify } = useNotification();
 
 const plan = ref({ memberId: "", id: "", title: "", description: "" });
-const plansByDate = ref({
-  id: [],
-});
+const plansByDate = ref({});
 const selectedDay = ref(-1);
 const isOpenMap = ref(false);
+const latLngList = ref([]);
 
 const handleClickDay = day => {
   if (selectedDay.value === day) selectedDay.value = -1;
@@ -56,7 +49,13 @@ onMounted(async () => {
     };
     plansByDate.value = { ...data.planDate };
   }
-  console.log(plansByDate.value);
+});
+
+watch(selectedDay, () => {
+  latLngList.value = [];
+  plansByDate.value[selectedDay.value].forEach(element => {
+    latLngList.value.push({ lat: element["mapy"], lng: element["mapx"] });
+  });
 });
 </script>
 
@@ -77,11 +76,11 @@ onMounted(async () => {
       <section v-else class="plans">
         <div v-for="(key, idx) in Object.keys(plansByDate)" :key="key" class="plan">
           <CheckCircleIcon
-            v-if="idx === selectedDay"
+            v-if="Object.keys(plansByDate)[idx] === selectedDay"
             class="check-icon point"
-            @click="handleClickDay(idx)"
+            @click="handleClickDay(Object.keys(plansByDate)[idx])"
           />
-          <div v-else @click="handleClickDay(idx)">
+          <div v-else @click="handleClickDay(Object.keys(plansByDate)[idx])">
             <div class="circle"></div>
           </div>
           <div class="day">
@@ -119,8 +118,29 @@ onMounted(async () => {
 
       <section v-if="isOpenMap">
         <div class="map">
-          <KakaoMap :lat="33.450701" :lng="126.570667" style="width: 100%">
-            <KakaoMapPolyline :latLngList="latLngList" />
+          <KakaoMap :lat="latLngList[0]['lat']" :lng="latLngList[0]['lng']" style="width: 100%">
+            <KakaoMapPolyline
+              :latLngList="latLngList"
+              :endArrow="true"
+              :strokeWeight="5"
+              :strokeColor="'#ff747c'"
+              :strokeOpacity="1"
+            />
+
+            <KakaoMapMarker
+              v-for="(latLng, index) in latLngList"
+              :key="index"
+              :lat="latLng['lat']"
+              :lng="latLng['lng']"
+            />
+
+            <KakaoMapInfoWindow
+              v-for="(latLng, index) in latLngList"
+              :key="index"
+              :lat="latLng['lat']"
+              :lng="latLng['lng']"
+              :content="plansByDate[selectedDay][index]['title']"
+            />
           </KakaoMap>
         </div>
       </section>
