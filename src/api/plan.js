@@ -17,6 +17,7 @@ export const addSpotToPlan = async params => {
     const response = await clientInstance.post(url, params);
     return response;
   } catch (error) {
+    console.log(error);
     return error;
   }
 };
@@ -27,6 +28,7 @@ export const addPlan = async params => {
     const response = await clientInstance.post(url, params);
     return response;
   } catch (error) {
+    console.dir(error);
     return error;
   }
 };

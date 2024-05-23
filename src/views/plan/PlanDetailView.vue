@@ -11,7 +11,7 @@ import {
 } from "@heroicons/vue/24/solid";
 import { CheckCircleIcon } from "@heroicons/vue/24/solid";
 import { useNotification } from "@kyvg/vue3-notification";
-import { KakaoMap, KakaoMapInfoWindow, KakaoMapMarker, KakaoMapPolyline } from "vue3-kakao-maps";
+import { KakaoMap, KakaoMapMarkerPolyline } from "vue3-kakao-maps";
 import NoImage from "@/assets/img/noimage.png";
 import { usePlanStore } from "@/stores/plan-store";
 
@@ -23,7 +23,7 @@ const plan = ref({ memberId: "", id: "", title: "", description: "" });
 const plansByDate = ref({});
 const selectedDay = ref(-1);
 const isOpenMap = ref(false);
-const latLngList = ref([]);
+const markerList = ref([]);
 
 const handleClickDay = day => {
   if (selectedDay.value === day) selectedDay.value = -1;
@@ -33,6 +33,10 @@ const handleClickDay = day => {
 const handleClickShowMap = () => {
   if (selectedDay.value === -1) {
     notify({ type: "warn", text: "날짜를 선택해 주세요!" });
+    return;
+  }
+  if (markerList.value.length === 0) {
+    notify({ type: "error", text: "선택하신 날짜에 경로를 보여줄 여행지가 없습니다!" });
     return;
   }
   isOpenMap.value = !isOpenMap.value;
@@ -51,10 +55,21 @@ onMounted(async () => {
   }
 });
 
+const markerImage = {
+  imageSrc: "https://my-web-contents-bucket.s3.ap-northeast-2.amazonaws.com/marker.png",
+  imageWidth: 50,
+  imageHeight: 50,
+};
+
 watch(selectedDay, () => {
-  latLngList.value = [];
+  markerList.value = [];
   plansByDate.value[selectedDay.value].forEach(element => {
-    latLngList.value.push({ lat: element["mapy"], lng: element["mapx"] });
+    markerList.value.push({
+      lat: element["mapy"],
+      lng: element["mapx"],
+      image: markerImage,
+      orderBottomMargin: "35px",
+    });
   });
 });
 </script>
@@ -97,7 +112,7 @@ watch(selectedDay, () => {
           <div class="spots">
             <div v-for="spot in plansByDate[key]" :key="spot.contentId" class="spot pointer">
               <img :src="spot.image ? spot.image : NoImage" :alt="spot.title" />
-              <span>{{ spot.title }}</span>
+              <span class="spot-title">{{ spot.title }}</span>
               <XCircleIcon @click="handleClickDeleteSpot(spot.id)" />
             </div>
           </div>
@@ -109,8 +124,8 @@ watch(selectedDay, () => {
             <PlusCircleIcon />
           </div>
           <div class="button pointer" @click="handleClickShowMap">
-            <p>선택한 날짜로 경로 보기</p>
-            <ChevronDoubleUpIcon v-if="isOpenMap" />
+            <p :class="isOpenMap && 'point'">선택한 날짜로 경로 보기</p>
+            <ChevronDoubleUpIcon v-if="isOpenMap" :class="isOpenMap && 'point'" />
             <ChevronDoubleDownIcon v-else />
           </div>
         </div>
@@ -118,32 +133,18 @@ watch(selectedDay, () => {
 
       <section v-if="isOpenMap">
         <div class="map">
-          <KakaoMap :lat="latLngList[0]['lat']" :lng="latLngList[0]['lng']" style="width: 100%">
-            <KakaoMapPolyline
-              :latLngList="latLngList"
+          <KakaoMap :lat="markerList[0]['lat']" :lng="markerList[0]['lng']" style="width: 100%">
+            <KakaoMapMarkerPolyline
+              :markerList="markerList"
+              :showMarkerOrder="true"
               :endArrow="true"
-              :strokeWeight="5"
-              :strokeColor="'#ff747c'"
+              strokeColor="#ff747c"
               :strokeOpacity="1"
-            />
-
-            <KakaoMapMarker
-              v-for="(latLng, index) in latLngList"
-              :key="index"
-              :lat="latLng['lat']"
-              :lng="latLng['lng']"
-            />
-
-            <KakaoMapInfoWindow
-              v-for="(latLng, index) in latLngList"
-              :key="index"
-              :lat="latLng['lat']"
-              :lng="latLng['lng']"
-              :content="plansByDate[selectedDay][index]['title']"
             />
           </KakaoMap>
         </div>
       </section>
+      <div v-else style="height: 300px"></div>
     </div>
   </main>
 </template>
@@ -236,11 +237,18 @@ svg {
 
 .spot {
   position: relative;
-  width: 100%;
+  width: 150px;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  overflow: hidden;
+}
+
+.spot-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .spot span {
@@ -258,9 +266,9 @@ svg {
 
 .spot svg {
   width: 25px;
-  position: absolute;
-  top: -10px;
-  right: -10px;
+  position: relative;
+  top: -180px;
+  left: 120px;
 }
 
 .spot img {
