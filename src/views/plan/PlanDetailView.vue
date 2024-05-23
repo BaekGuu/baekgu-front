@@ -172,7 +172,7 @@ svg {
 .title img {
   position: absolute;
   right: 21%;
-  top: 21%;
+  top: 15%;
   width: 5rem;
 }
 
@@ -183,11 +183,9 @@ svg {
   margin-top: 2rem;
   margin-bottom: 1rem;
   border-radius: 15px;
-  padding: 0.8rem 1rem;
-  padding-left: 0;
   overflow-x: auto;
   border: 2px solid #7aa2ce;
-  min-height: 180px;
+  min-height: 230px;
 }
 
 .selected-day {
@@ -233,6 +231,7 @@ svg {
   justify-content: start;
   align-items: center;
   gap: 1rem;
+  margin-top: 25px;
 }
 
 .spot {

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDateToPlan, deleteDateToPlan, deleteSpotFromPlan, getPlanList } from "@/api/plan";
+import { addDateToPlan, deleteDateToPlan, deleteSpotFromPlan } from "@/api/plan";
 import { OK } from "@/constant/status";
 import { useNotification } from "@kyvg/vue3-notification";
 import { reload } from "@/util/custom-router";
