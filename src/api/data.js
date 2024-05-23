@@ -50,3 +50,13 @@ export const getBarrierFreeInfo = async contentId => {
     return error;
   }
 };
+
+export const getSpotDetail = async contentId => {
+  const url = `/detailCommon1?serviceKey=${import.meta.env.VITE_DATA_SERVICE_KEY}&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y&MobileOS=ETC&MobileApp=AppTest&contentId=${contentId}&_type=json`;
+  try {
+    const response = await dataInstance.get(url);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};

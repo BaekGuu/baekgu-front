@@ -4,12 +4,12 @@ import BaseButton from "@/components/BaseButton.vue";
 import BaseSelect from "@/components/BaseSelect.vue";
 import BaseCard from "@/components/BaseCard.vue";
 import BasePaginate from "@/components/BasePaginate.vue";
-import BaseRoundBox from "@/components/BaseRoundBox.vue";
 import { useNotification } from "@kyvg/vue3-notification";
 import { OK } from "@/constant/status";
 import { mainCategory, subCategory } from "@/util/types";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import router from "@/router";
 
 const { notify } = useNotification();
 
@@ -19,6 +19,7 @@ const keyword = ref("");
 const areaCode = ref(0);
 const sigunguCode = ref(0);
 const isSectionOpen = ref(true);
+const isLoading = ref(false);
 
 const currentPage = ref(1);
 const searchResults = ref([]);
@@ -49,6 +50,7 @@ const handleSelectDistrict = code => {
 };
 
 const handleClickSearch = async () => {
+  isLoading.value = true;
   if (keyword.value === "") {
     notify({ type: "error", text: "키워드를 입력해 주세요!" });
     return;
@@ -59,10 +61,16 @@ const handleClickSearch = async () => {
     sigunguCode.value,
     currentPage.value,
   );
+
   if (status === OK) {
-    searchResults.value = data.response.body.items.item;
+    if (data.response) isLoading.value = false;
+    if (!isLoading.value) searchResults.value = await data.response.body.items.item;
   }
 };
+
+watch(isLoading, () => {
+  console.log(isLoading.value);
+});
 
 const openSection = () => (isSectionOpen.value = !isSectionOpen.value);
 
@@ -83,7 +91,7 @@ const handlerClickPageNum = async page => {
   <main class="page">
     <div class="inner">
       <section class="search">
-        <input type="text" placeholder="여행지 키워드 검색" v-model="keyword" />
+        <input type="text" placeholder="여행지 키워드 검색 (필수)" v-model="keyword" />
         <p class="gray">여행하고 싶은 지역을 골라주세요.</p>
         <div class="selects">
           <BaseSelect
@@ -98,7 +106,7 @@ const handlerClickPageNum = async page => {
             @handleClickSelect="handleClickDistrictSelect"
             @handleSelectOption="handleSelectDistrict"
           />
-          <BaseButton text="검색" :width="15" :isActive="true" :on-click="handleClickSearch" />
+          <BaseButton text="검색" :width="15" :style="'primary'" :on-click="handleClickSearch" />
         </div>
       </section>
 
@@ -116,13 +124,20 @@ const handlerClickPageNum = async page => {
             <span class="category-title">{{ category }}</span>
             <div class="sub-category">
               <div v-for="sub in subCategory[category]" :key="sub" class="checkbox-container">
-                <BaseRoundBox :text="sub" :primary="false" />
+                <div class="bg-white round-box">
+                  <span class="black">
+                    {{ sub }}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      <div v-show="isLoading" style="display: flex; align-items: center; justify-content: center">
+        <img src="../assets/img/loading.gif" alt="로딩중" style="margin: 5rem 0; width: 10%" />
+      </div>
       <section class="search-result">
         <p v-if="!searchResults">검색 결과가 없습니다😥</p>
         <div v-else>
@@ -141,6 +156,7 @@ const handlerClickPageNum = async page => {
               :imageUrl="result.firstimage"
               :title="result.title"
               :addr="result.addr1.split(' ').slice(0, 2).join(' ')"
+              @click="() => router.push('/detail/' + result.contentid)"
             />
           </div>
         </div>
@@ -247,6 +263,21 @@ section {
 .checkbox-container {
   display: flex;
   align-items: center;
+}
+
+svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.round-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.5px solid #7aa2ce;
+  border-radius: 15px;
+  transition: background-color 0.3s;
+  padding: 0.5rem 1rem;
 }
 
 .search-result p {

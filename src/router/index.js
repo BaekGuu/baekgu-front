@@ -5,8 +5,11 @@ import BoardListView from "@/views/board/BoardListView.vue";
 import BoardDetailView from "@/views/board/BoardDetailView.vue";
 import BoardRegistView from "@/views/board/BoardRegistView.vue";
 import BoardEditView from "@/views/board/BoardEditView.vue";
+import SpotView from "@/views/SpotView.vue";
 import { getCookie } from "@/util/cookies";
 import { useNotification } from "@kyvg/vue3-notification";
+import PlanView from "@/views/plan/PlanView.vue";
+import PlanDetailView from "@/views/plan/PlanDetailView.vue";
 
 const { notify } = useNotification();
 
@@ -24,6 +27,9 @@ const router = createRouter({
       name: "search",
       component: SearchView,
     },
+    { path: "/detail/:id", name: "spot", component: SpotView },
+    { path: "/plan", name: "plan", component: PlanView },
+    { path: "/plan/:id", name: "plan-detail", component: PlanDetailView },
     {
       path: "/board",
       name: "board",
@@ -47,7 +53,7 @@ const router = createRouter({
   ],
 });
 
-const needLogin = ["/board", "/search"];
+const needLogin = ["/board", "/search", "/detail", "/plan"];
 
 router.beforeEach((to, from, next) => {
   if (needLogin.includes(to.path) && !getCookie("userId")) {

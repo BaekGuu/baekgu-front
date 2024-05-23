@@ -5,6 +5,7 @@ import { useBoardStore } from "@/stores/board-store";
 
 const { loginedMember } = useMemberStore();
 const { board, handleSubmitRegist } = useBoardStore();
+//TODO: 상태의 board를 가져오지 말고 새로운 board 객체 생성 해야 함
 </script>
 
 <template>
@@ -29,7 +30,7 @@ const { board, handleSubmitRegist } = useBoardStore();
           placeholder="최대 100자"
         ></textarea>
       </div>
-      <BaseButton :is-active="true" :width="20" text="저장" :type="'submit'" />
+      <BaseButton :style="'primary'" :width="20" text="저장" :type="'submit'" />
     </form>
   </main>
 </template>

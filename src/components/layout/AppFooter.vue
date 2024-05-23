@@ -33,6 +33,10 @@ footer {
   align-items: end;
 }
 
+p {
+  font-size: 1rem;
+}
+
 .info,
 .contact {
   margin: 2rem;

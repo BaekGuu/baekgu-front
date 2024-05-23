@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, useRoute } from "vue-router";
 import AppModal from "../BaseModal.vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { getCookie } from "@/util/cookies";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
 import router from "@/router";
@@ -25,45 +25,26 @@ const closeModal = () => {
   modalType.value = "로그인";
 };
 
-const handleClickOpenUserSection = () => {
+const openUserSection = () => {
   isOpenUserSection.value = !isOpenUserSection.value;
 };
 
-watch(isOpenModal, () => {
-  if (isOpenModal.value) document.body.style.overflow = "hidden";
-  else document.body.style.overflow = "auto";
-});
-
-watch(isOpenUserSection, () => {
-  const userInfoSection = document.getElementById("userInfoSection");
-  const userInfo = document.getElementById("userInfo");
-
-  if (isOpenUserSection.value) {
-    userInfo.style.cssText = `
-      display: flex;
-      flex-direction: column;
-      text-align: center;
-    `;
-    userInfoSection.style.cssText += "box-shadow: 2px 2px 5px 0.5px rgba(0, 0, 0, .2);";
-  } else {
-    userInfo.style.display = "none";
-    userInfoSection.style.cssText -= "box-shadow: 2px 2px 5px 0.5px rgba(0, 0, 0, .2);";
-  }
-});
-
 const isBoardRoute = computed(() => {
   return route.path.startsWith("/board");
-})
+});
+
+const isSearchRoute = computed(() => {
+  return route.path.startsWith("/detail") || route.path.startsWith("/search");
+});
+
+const isPlanRoute = computed(() => {
+  return route.path.startsWith("/plan");
+});
 </script>
 
 <template>
-  <AppModal
-    v-if="isOpenModal"
-    :modal-type="modalType"
-    @close-modal="closeModal"
-    @open-modal="openModal"
-  />
-  <header class="bg-white border-bottom">
+  <AppModal v-if="isOpenModal" :modal-type="modalType" @close-modal="closeModal" />
+  <header class="bg-white">
     <main class="border-bottom">
       <div class="inner">
         <div class="logo" @click="router.push('/')">
@@ -73,16 +54,20 @@ const isBoardRoute = computed(() => {
         </div>
         <div
           v-if="username"
-          class="logined pointer"
+          :class="['logined', 'pointer', isOpenUserSection && 'shadow']"
           id="userInfoSection"
-          @click="handleClickOpenUserSection"
+          @click="openUserSection"
         >
-          <div style="display: flex; align-items: center">
+          <div>
             <p>{{ username }}님, 안녕하세요!</p>
-            <ChevronDownIcon v-if="!isOpenUserSection" style="width: 1rem" />
-            <ChevronUpIcon class="point" v-if="isOpenUserSection" style="width: 1rem" />
+            <template v-if="isOpenUserSection">
+              <ChevronUpIcon class="point" style="width: 1rem" />
+            </template>
+            <template v-else>
+              <ChevronDownIcon style="width: 1rem" />
+            </template>
           </div>
-          <div id="userInfo" style="display: none">
+          <div v-show="isOpenUserSection" class="user-info">
             <p class="hover" @click="openModal('내 정보 보기')">내 정보 보기</p>
             <hr />
             <p class="hover" @click="openModal('회원 정보 수정')">회원 정보 수정</p>
@@ -96,10 +81,11 @@ const isBoardRoute = computed(() => {
         </div>
       </div>
     </main>
-    <nav>
+    <nav class="border-bottom">
       <div class="inner">
         <RouterLink to="/" active-class="active" exact>백구는요,</RouterLink>
-        <RouterLink to="/search" active-class="active" exact>여행지 검색</RouterLink>
+        <RouterLink to="/search" :class="{ active: isSearchRoute }">여행지 검색</RouterLink>
+        <RouterLink to="/plan" :class="{ active: isPlanRoute }">나의 여행</RouterLink>
         <RouterLink to="/board" :class="{ active: isBoardRoute }">게시판</RouterLink>
       </div>
     </nav>
@@ -155,6 +141,10 @@ img {
   padding: 0 1rem;
 }
 
+.shadow {
+  box-shadow: 2px 2px 5px 0.5px rgba(0, 0, 0, 0.2);
+}
+
 .logined p {
   font-size: 1rem;
 }
@@ -170,6 +160,12 @@ img {
 .user p {
   cursor: pointer;
   margin: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 
 nav {

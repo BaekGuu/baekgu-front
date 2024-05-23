@@ -35,6 +35,37 @@ export const subCategory = ref({
   "영유아 가족": ["👶🏻 유모차", "🚼 수유실", "🪑 유아용 보조 의자", "👪 영유아 가족 기타"],
 });
 
+export const barrierFreeInfo = {
+  audioguide: "🎧 오디오 가이드",
+  auditorium: "🎟️ 관람석",
+  babysparechair: "🪑 유아용 보조 의자",
+  bigprint: "🔠 큰 활자 홍보물",
+  blindhandicapetc: "👨🏻‍🦯 시각장애 기타",
+  braileblock: "🦯 점자 블록",
+  brailepromotion: "📃 점자 홍보물 및 점자 표지판",
+  elevator: "🔼 엘리베이터",
+  restroom: "🚻 화장실",
+  room: "🛏️ 객실",
+  handicapetc: "♿ 휠체어",
+  helpdog: "🐕‍🦺 보조견 동반",
+  guidehuman: "‍‍💁‍ 안내 요원",
+  guidesystem: "🛠️ 유도안내설비",
+  signguide: "🧏 수화 안내",
+  videoguide: "📼 영상 자막 안내",
+  hearingroom: "🛏️ 청각장애인용 객실",
+  hearinghandicapetc: "🧏‍♂️ 청각 장애 기타 상세",
+  stroller: "👶🏻 유모차",
+  lactationroom: "🚼 수유실",
+  infantsfamilyetcs: "👪 영유아 가족 기타",
+  parking: "🚗 주차 여부",
+  route: "👌 접근로",
+  publictransport: "🚌 대중교통",
+  ticketoffice: "🎫 매표소",
+  promotion: "📢 홍보물",
+  wheelchair: "🦽 지체장애 기타",
+  exit: "🏃 출입 통로",
+};
+
 export const barrierFreeEmoji = {
   audioguide: "🎧",
   auditorium: "🎟️",

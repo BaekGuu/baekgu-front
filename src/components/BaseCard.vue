@@ -17,7 +17,7 @@ const icons = ref([]);
 onMounted(async () => {
   const { data, status } = await getBarrierFreeInfo(props.id);
   if (status === OK) {
-    Object.keys(data.response.body.items.item[0]).forEach(ele => {
+    Object.keys(await data.response.body.items.item[0]).forEach(ele => {
       data.response.body.items.item[0][ele] &&
         data.response.body.items.item[0][ele] !== "contentid" &&
         icons.value.push(barrierFreeEmoji[ele]);

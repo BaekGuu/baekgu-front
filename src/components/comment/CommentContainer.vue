@@ -26,7 +26,7 @@ onMounted(async () => {
       style="width: 80%"
     />
     <BaseButton
-      :is-active="true"
+      :style="'primary'"
       text="등록"
       :width="15"
       :on-click="async () => await handleClickSave()"

@@ -20,7 +20,7 @@ const { board, handleSubmitEdit } = useBoardStore();
         <label for="content" style="width: 10%">내용</label>
         <textarea id="content" style="width: 90%" rows="20" v-model="board.content"></textarea>
       </div>
-      <BaseButton :is-active="true" :width="20" text="수정" :type="'submit'" />
+      <BaseButton :style="'primary'" :width="20" text="수정" :type="'submit'" />
     </form>
   </main>
 </template>
