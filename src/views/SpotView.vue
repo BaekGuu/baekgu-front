@@ -134,7 +134,13 @@ onUnmounted(() => {
     @close-modal="isOpenAddPlanModal = fasle"
   />
   <div class="page" id="top">
-    <div v-if="isLoading">로딩 중..</div>
+    <div v-if="isLoading" style="display: flex; align-items: center; justify-content: center">
+      <img
+        src="../assets/img/loading.gif"
+        alt="로딩중"
+        style="margin: 10rem 0; width: 10vh; height: 10vh"
+      />
+    </div>
     <div v-else class="inner" id="content">
       <div class="title">
         <div>

@@ -8,7 +8,7 @@ import { useNotification } from "@kyvg/vue3-notification";
 import { OK } from "@/constant/status";
 import { mainCategory, subCategory } from "@/util/types";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/vue/24/solid";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import router from "@/router";
 
 const { notify } = useNotification();
@@ -19,6 +19,7 @@ const keyword = ref("");
 const areaCode = ref(0);
 const sigunguCode = ref(0);
 const isSectionOpen = ref(true);
+const isLoading = ref(false);
 
 const currentPage = ref(1);
 const searchResults = ref([]);
@@ -49,6 +50,7 @@ const handleSelectDistrict = code => {
 };
 
 const handleClickSearch = async () => {
+  isLoading.value = true;
   if (keyword.value === "") {
     notify({ type: "error", text: "키워드를 입력해 주세요!" });
     return;
@@ -59,10 +61,16 @@ const handleClickSearch = async () => {
     sigunguCode.value,
     currentPage.value,
   );
+
   if (status === OK) {
-    searchResults.value = await data.response.body.items.item;
+    if (data.response) isLoading.value = false;
+    if (!isLoading.value) searchResults.value = await data.response.body.items.item;
   }
 };
+
+watch(isLoading, () => {
+  console.log(isLoading.value);
+});
 
 const openSection = () => (isSectionOpen.value = !isSectionOpen.value);
 
@@ -127,6 +135,9 @@ const handlerClickPageNum = async page => {
         </div>
       </section>
 
+      <div v-show="isLoading" style="display: flex; align-items: center; justify-content: center">
+        <img src="../assets/img/loading.gif" alt="로딩중" style="margin: 5rem 0; width: 10%" />
+      </div>
       <section class="search-result">
         <p v-if="!searchResults">검색 결과가 없습니다😥</p>
         <div v-else>
