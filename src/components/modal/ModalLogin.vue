@@ -9,7 +9,7 @@ const { member, handleSubmitLogin } = useMemberStore();
   <form @submit.prevent="async () => await handleSubmitLogin()">
     <input type="text" placeholder="아이디" v-model="member.id" />
     <input type="password" placeholder="비밀번호" v-model="member.password" />
-    <BaseButton text="로그인" :is-active="true" :width="100" :type="'submit'" />
+    <BaseButton text="로그인" :style="'primary'" :width="100" :type="'submit'" />
     <div class="social">
       <img src="../../assets/img/kakao_login.svg" alt="카카오로그인" />
       <img src="../../assets/img/naver_login.svg" alt="네이버로그인" />

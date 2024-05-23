@@ -44,7 +44,7 @@ onMounted(async () => {
       />
     </div>
 
-    <BaseButton text="추가하기" :is-active="true" :width="100" :type="'submit'" />
+    <BaseButton text="추가하기" :style="'primary'" :width="100" :type="'submit'" />
   </form>
 </template>
 

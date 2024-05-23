@@ -46,7 +46,7 @@ onMounted(async () => {
       />
       <BaseButton
         text="중복확인"
-        :isActive="true"
+        :style="'primary'"
         :type="validation.nickName ? 'check' : 'button'"
         @click="
           async () => {
@@ -72,7 +72,13 @@ onMounted(async () => {
       >비밀번호가 일치하지 않습니다.</span
     >
     <input type="text" placeholder="이메일" v-model="member.email" />
-    <BaseButton text="수정하기" :isActive="isValid" :width="100" :type="'submit'" />
+    <BaseButton
+      text="수정하기"
+      :style="'primary'"
+      :disabled="!isValid"
+      :width="100"
+      :type="'submit'"
+    />
   </form>
 </template>
 

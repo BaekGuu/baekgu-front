@@ -33,7 +33,7 @@ const isValid = computed(() => {
       />
       <BaseButton
         text="중복확인"
-        :isActive="true"
+        :style="'primary'"
         :type="validation.nickName ? 'check' : 'button'"
         @click="
           async () => {
@@ -46,7 +46,7 @@ const isValid = computed(() => {
       <input type="text" placeholder="아이디" v-model="member.id" @input="validation.id = false" />
       <BaseButton
         text="중복확인"
-        :isActive="true"
+        :style="'primary'"
         :type="validation.id ? 'check' : 'button'"
         @click="
           async () => {
@@ -72,7 +72,13 @@ const isValid = computed(() => {
       >비밀번호가 일치하지 않습니다.</span
     >
     <input type="text" placeholder="이메일" v-model="member.email" />
-    <BaseButton text="회원가입" :isActive="isValid" :width="100" :type="'submit'" />
+    <BaseButton
+      text="회원가입"
+      :style="'primary'"
+      :disabled="!isValid"
+      :width="100"
+      :type="'submit'"
+    />
   </form>
 </template>
 

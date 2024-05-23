@@ -24,7 +24,7 @@ const handleClickPageNum = pageNum => {
     <div class="inner">
       <div class="search">
         <input type="text" placeholder="검색하고 싶은 제목 또는 내용을 입력하세요." />
-        <BaseButton text="검색" :width="15" :is-active="true" />
+        <BaseButton text="검색" :width="15" :style="'primary'" />
       </div>
       <div
         style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: end"
@@ -33,8 +33,8 @@ const handleClickPageNum = pageNum => {
           총 <span class="primary bold">{{ boards.length }}</span
           >건
         </p>
-        <RouterLink to="/board/regist" style="width: 10%; height: 100%">
-          <BaseButton :is-active="true" :width="100" text="글쓰기" />
+        <RouterLink to="/board/regist" style="width: 15%; height: 100%">
+          <BaseButton :style="'white'" :width="100" text="글쓰기" />
         </RouterLink>
       </div>
       <table>

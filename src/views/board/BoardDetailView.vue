@@ -51,7 +51,7 @@ onMounted(async () => {
           <TrashIcon /><span>삭제하기</span>
         </div>
         <BaseButton
-          :is-active="true"
+          :style="'primary'"
           :width="15"
           text="목록 보기"
           :on-click="() => router.push('/board')"

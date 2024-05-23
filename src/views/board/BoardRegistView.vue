@@ -30,7 +30,7 @@ const { board, handleSubmitRegist } = useBoardStore();
           placeholder="최대 100자"
         ></textarea>
       </div>
-      <BaseButton :is-active="true" :width="20" text="저장" :type="'submit'" />
+      <BaseButton :style="'primary'" :width="20" text="저장" :type="'submit'" />
     </form>
   </main>
 </template>

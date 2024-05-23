@@ -98,7 +98,7 @@ const handlerClickPageNum = async page => {
             @handleClickSelect="handleClickDistrictSelect"
             @handleSelectOption="handleSelectDistrict"
           />
-          <BaseButton text="검색" :width="15" :isActive="true" :on-click="handleClickSearch" />
+          <BaseButton text="검색" :width="15" :style="'primary'" :on-click="handleClickSearch" />
         </div>
       </section>
 

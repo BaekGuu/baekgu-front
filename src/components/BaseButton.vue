@@ -5,7 +5,9 @@ defineProps({
   type: String,
   text: String,
   width: Number,
-  isActive: Boolean,
+  style: String,
+  // primary, white
+  disabled: Boolean,
   onClick: Function,
 });
 </script>
@@ -13,9 +15,10 @@ defineProps({
 <template>
   <button
     :type="type === 'submit' ? 'submit' : 'button'"
-    :class="['button', isActive ? 'active' : 'disabled', type === 'check' && 'check']"
+    :class="[disabled && 'disabled', type === 'check' && 'check', style]"
     :style="{ width: width + '%' }"
     @click="onClick"
+    :disabled="disabled"
   >
     {{ type === "check" ? "" : text }}
     <CheckIcon v-if="type === 'check'" class="check-icon" />
@@ -23,12 +26,13 @@ defineProps({
 </template>
 
 <style scoped>
-.button {
+button {
   padding: 0.8rem 1rem;
   outline: none;
-  border: none;
+  border: 0.5px solid #ccc;
   border-radius: 10px;
   font-size: 1rem;
+  font-weight: 700;
   color: white;
   cursor: pointer;
   transition:
@@ -39,23 +43,40 @@ defineProps({
 .check {
   padding: 0.5rem 1rem;
   border-radius: 20px;
+  background-color: #7aa2ce;
 }
 
-.button:hover:not(.disabled) {
-  transform: translateY(-2px);
+.white {
+  background-color: #fff;
+  color: #7aa2ce;
 }
 
-.button:focus:not(.disabled) {
-  box-shadow: 0 0 0 3px #7aa2ce;
+.primary {
+  background-color: #7aa2ce;
+  color: #fff;
+}
+
+.white:hover:not(.disabled) {
+  background-color: #7aa2ce;
+  color: #fff;
+  border: 1px solid #aaa;
+}
+
+.primary:hover:not(.disabled) {
+  background-color: #fff;
+  color: #7aa2ce;
+}
+
+button:active:not(.disabled) {
+  box-shadow:
+    0 0 0 0.2px #aaa inset,
+    0 0 0 0.2px #aaa inset,
+    0 0 0 0.2px #aaa;
 }
 
 .disabled {
   background-color: #d9d9d9;
   cursor: not-allowed;
-}
-
-.active {
-  background-color: #7aa2ce;
 }
 
 .check-icon {
