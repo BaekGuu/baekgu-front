@@ -14,6 +14,7 @@ import { useNotification } from "@kyvg/vue3-notification";
 import { KakaoMap, KakaoMapMarkerPolyline } from "vue3-kakao-maps";
 import NoImage from "@/assets/img/noimage.png";
 import { usePlanStore } from "@/stores/plan-store";
+import draggable from "vuedraggable";
 
 const route = useRoute();
 const { handleClickAddDate, handleClickDeleteDate, handleClickDeleteSpot } = usePlanStore();
@@ -24,8 +25,10 @@ const plansByDate = ref({});
 const selectedDay = ref(-1);
 const isOpenMap = ref(false);
 const markerList = ref([]);
+const drag = ref(false);
 
 const handleClickDay = day => {
+  console.log(day);
   if (selectedDay.value === day) selectedDay.value = -1;
   else selectedDay.value = day;
 };
@@ -40,6 +43,12 @@ const handleClickShowMap = () => {
     return;
   }
   isOpenMap.value = !isOpenMap.value;
+};
+
+const handleChangeOrder = e => {
+  console.log(e);
+  // e.dragged => 드래그 된 친구
+  // e.related => 원래 있던 친궄
 };
 
 onMounted(async () => {
@@ -91,31 +100,36 @@ watch(selectedDay, () => {
       <section v-else class="plans">
         <div v-for="(key, idx) in Object.keys(plansByDate)" :key="key" class="plan">
           <CheckCircleIcon
-            v-if="Object.keys(plansByDate)[idx] === selectedDay"
+            v-if="key === selectedDay"
             class="check-icon point"
-            @click="handleClickDay(Object.keys(plansByDate)[idx])"
+            @click="handleClickDay(key)"
           />
-          <div v-else @click="handleClickDay(Object.keys(plansByDate)[idx])">
+          <div v-else @click="handleClickDay(key)">
             <div class="circle"></div>
           </div>
           <div class="day">
             <h3 class="point">
               <span>{{ idx + 1 }}</span> day
             </h3>
-            <p
-              @click="() => handleClickDeleteDate(Object.keys(plansByDate)[idx])"
-              class="pointer button"
-            >
-              날짜 삭제하기
-            </p>
+            <p @click="() => handleClickDeleteDate(key)" class="pointer button">날짜 삭제하기</p>
           </div>
-          <div class="spots">
-            <div v-for="spot in plansByDate[key]" :key="spot.contentId" class="spot pointer">
-              <img :src="spot.image ? spot.image : NoImage" :alt="spot.title" />
-              <span class="spot-title">{{ spot.title }}</span>
-              <XCircleIcon @click="handleClickDeleteSpot(spot.id)" />
-            </div>
-          </div>
+
+          <draggable
+            v-model="plansByDate[key]"
+            @start="drag = true"
+            @end="drag = false"
+            item-key="contentId"
+            :move="handleChangeOrder"
+            class="spots pointer"
+          >
+            <template #item="{ element: spot }">
+              <div class="spot">
+                <img :src="spot.image ? spot.image : NoImage" :alt="spot.title" />
+                <span class="spot-title">{{ spot.title }}</span>
+                <XCircleIcon @click="handleClickDeleteSpot(spot.id)" />
+              </div>
+            </template>
+          </draggable>
         </div>
 
         <div class="button-container">
@@ -225,23 +239,28 @@ svg {
 .plan p {
   font-size: 1rem;
 }
-
+/* 
 .spots {
   display: flex;
   justify-content: start;
   align-items: center;
   gap: 1rem;
   margin-top: 25px;
+} */
+
+.spots {
+  display: flex;
+  gap: 0.5rem;
+  overflow: hidden;
 }
 
 .spot {
   position: relative;
-  width: 150px;
   height: 100%;
+  width: 150px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  overflow: hidden;
+  margin-top: 25px;
 }
 
 .spot-title {
@@ -266,7 +285,7 @@ svg {
 .spot svg {
   width: 25px;
   position: relative;
-  top: -180px;
+  top: -165px;
   left: 120px;
 }
 
