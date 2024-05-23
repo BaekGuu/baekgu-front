@@ -13,7 +13,7 @@ const { setSpotDetail, setSpotBarrierFree } = useSpotStore();
 
 const route = useRoute();
 const isLoading = ref(true);
-const scrollY = ref(window?.scrollY);
+const scrollY = ref(window.scrollY);
 const spot = ref({});
 const barrierfree = ref({});
 const activeMenu = ref("menu1");
@@ -52,7 +52,8 @@ const scrollToTargetMenu = e => {
 };
 
 const updateActiveMenu = () => {
-  scrollY.value = window.scroll;
+  scrollY.value = window.scrollY;
+
   const sections = ["picture", "basic", "barrierfree", "location"];
   const offset = 200;
   let activeSection = sections[0];
@@ -277,7 +278,7 @@ h1 {
 
 .top-menu {
   position: fixed;
-  top: 67px;
+  top: 135px;
   left: 0;
   width: 100vw;
   margin: 0;

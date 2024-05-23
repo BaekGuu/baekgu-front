@@ -26,9 +26,23 @@ export const addPlan = async params => {
   const url = `/plan/regist`;
   try {
     const response = await clientInstance.post(url, params);
+    // console.log(response);
     return response;
   } catch (error) {
     console.dir(error);
+    return error;
+  }
+};
+
+export const deletePlan = async planId => {
+  const url = "/plan/delete";
+  try {
+    const response = await clientInstance.post(url, {
+      id: planId,
+      memberId: getCookie("userId"),
+    });
+    return response;
+  } catch (error) {
     return error;
   }
 };
@@ -37,8 +51,10 @@ export const getPlanDetail = async planId => {
   const url = `/plan/detail/${planId}`;
   try {
     const response = await clientInstance.get(url, planId);
+    console.log(response);
     return response;
   } catch (error) {
+    console.log(error);
     return error;
   }
 };

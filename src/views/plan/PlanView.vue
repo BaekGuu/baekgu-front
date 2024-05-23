@@ -9,12 +9,13 @@ import Image6 from "@/assets/img/travel6.png";
 import Image7 from "@/assets/img/travel7.png";
 import BaseModal from "@/components/BaseModal.vue";
 import { OK } from "@/constant/status";
-import { PlusCircleIcon } from "@heroicons/vue/24/solid";
-
-// const route = useRoute();
+import { PlusCircleIcon, TrashIcon } from "@heroicons/vue/24/solid";
 
 import { onMounted, ref } from "vue";
 import router from "../../router";
+import { usePlanStore } from "@/stores/plan-store";
+
+const { handleDeletePlan } = usePlanStore();
 
 const plans = ref([]);
 const images = ref([Image1, Image2, Image3, Image4, Image5, Image6, Image7]);
@@ -42,16 +43,14 @@ onMounted(async () => {
         >*커버 이미지는 AI로 생성 되어 임의로 지정 됩니다.
       </span>
       <div class="cards">
-        <div
-          class="card pointer"
-          v-for="plan in plans"
-          :key="plan.id"
-          @click="router.push('/plan/' + plan.id)"
-        >
+        <div class="card pointer" v-for="plan in plans" :key="plan.id">
+          <div class="trash" @click="handleDeletePlan(plan.id)">
+            <TrashIcon class="trash-icon" />
+          </div>
           <div class="image-container">
             <img :src="getRandomImage()" alt="커버 이미지" />
           </div>
-          <div class="text-container">
+          <div class="text-container" @click="router.push('/plan/' + plan.id)">
             <h1>{{ plan.planTitle }}</h1>
             <p>{{ plan.description }}</p>
           </div>
@@ -77,6 +76,7 @@ onMounted(async () => {
 }
 
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,6 +91,33 @@ onMounted(async () => {
   transition:
     transform 0.3s,
     box-shadow 0.3s;
+}
+
+.trash {
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  right: 8px;
+  top: 3px;
+  position: absolute;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trash:hover {
+  background-color: #7aa2ce;
+}
+
+.trash-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.trash-icon:hover {
+  color: white;
 }
 
 .add-card {

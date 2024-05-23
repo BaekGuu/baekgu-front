@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDateToPlan, deleteDateToPlan, deleteSpotFromPlan } from "@/api/plan";
+import { addDateToPlan, deleteDateToPlan, deletePlan, deleteSpotFromPlan } from "@/api/plan";
 import { OK } from "@/constant/status";
 import { useNotification } from "@kyvg/vue3-notification";
 import { reload } from "@/util/custom-router";
@@ -34,6 +34,15 @@ export const usePlanStore = defineStore("plan", {
       const { status } = await deleteSpotFromPlan(id);
       if (status === OK) {
         notify({ type: "success", text: "여행지가 삭제 되었습니다!" });
+        reload();
+      }
+    },
+    async handleDeletePlan(planId) {
+      const flag = confirm("계획을 삭제 하시겠습니까?");
+      if (!flag) return;
+      const { data } = await deletePlan(planId);
+      if (data === 1) {
+        notify({ type: "success", text: "계획이 삭제 되었습니다!" });
         reload();
       }
     },

@@ -197,7 +197,7 @@ svg {
   margin-top: 2rem;
   margin-bottom: 1rem;
   border-radius: 15px;
-  overflow-x: auto;
+  overflow: auto;
   border: 2px solid #7aa2ce;
   min-height: 230px;
 }

@@ -1,9 +1,17 @@
 <script setup>
 import router from "@/router";
-import { ChevronDoubleDownIcon, ChevronDoubleUpIcon } from "@heroicons/vue/24/solid";
+import {
+  ArrowUpCircleIcon,
+  ChevronDoubleDownIcon,
+  ChevronDoubleUpIcon,
+} from "@heroicons/vue/24/solid";
 import { ref } from "vue";
 
 const isOpen = ref(true);
+
+const handleClickToTop = () => {
+  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+};
 </script>
 
 <template>
@@ -116,6 +124,10 @@ const isOpen = ref(true);
         </div>
       </div>
     </div>
+
+    <div class="inner">
+      <ArrowUpCircleIcon class="to-top point pointer" @click="handleClickToTop" />
+    </div>
   </main>
 </template>
 
@@ -148,6 +160,7 @@ p {
 }
 
 .intro img {
+  width: 100%;
   margin-top: 1.5rem;
   margin-bottom: 3rem;
 }
@@ -170,5 +183,13 @@ p {
 
 .start h2:hover {
   text-decoration: underline;
+}
+
+.to-top {
+  right: 2%;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  bottom: -2%;
 }
 </style>
