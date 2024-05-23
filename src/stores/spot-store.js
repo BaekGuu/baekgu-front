@@ -1,5 +1,5 @@
-import { addSpot } from "@/api/plan";
-import { OK } from "@/constant/status";
+import { addSpotToPlan } from "@/api/plan";
+// import { OK } from "@/constant/status";
 import { defineStore } from "pinia";
 
 export const useSpotStore = defineStore("spot", {
@@ -75,10 +75,12 @@ export const useSpotStore = defineStore("spot", {
         if (!filters.includes(key)) this.spot[key] = data[key];
       });
     },
-    async saveSpot() {
-      const { status } = await addSpot(this.spot);
-      if (status === OK) return true;
-      else false;
+    async addSpotToPlan(planId) {
+      const { data, status } = await addSpotToPlan({
+        planId: planId,
+        ...this.spot,
+      });
+      return { data, status };
     },
   },
 });

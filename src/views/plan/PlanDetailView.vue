@@ -161,16 +161,20 @@ svg {
 }
 
 .circle {
-  width: 1rem;
-  height: 1rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   border: 1px solid #aaa;
-  margin: 0 1rem;
+  margin: 0 0.5rem;
+}
+
+.circle:hover {
+  background-color: #7aa2ce;
 }
 
 .check-icon {
-  width: 30px;
-  margin: 0 1rem;
+  width: 1.8rem;
+  margin: 0 0.5rem;
 }
 
 .trash-icon {
@@ -184,6 +188,7 @@ svg {
   width: 10%;
   text-align: center;
   white-space: nowrap;
+  padding-right: 1rem;
 }
 
 .spots {

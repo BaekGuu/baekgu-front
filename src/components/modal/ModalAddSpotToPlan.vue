@@ -1,27 +1,21 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import BaseButton from "../BaseButton.vue";
-import { addSpotToPlan, getPlanList } from "@/api/plan";
+import { getPlanList } from "@/api/plan";
 import { OK } from "@/constant/status";
 import BaseCheckBox from "../BaseCheckBox.vue";
 import { useSpotStore } from "@/stores/spot-store";
 import { useNotification } from "@kyvg/vue3-notification";
 
-const { spot, saveSpot } = useSpotStore();
+const { addSpotToPlan } = useSpotStore();
 const { notify } = useNotification();
 
 const plans = ref([]);
 const selectedPlan = ref(false);
 
 const handleSubmitAddSpotToPlan = async () => {
-  const flag = await saveSpot();
-  if (flag) {
-    const { status } = await addSpotToPlan({
-      contentId: spot.contentId,
-      planId: selectedPlan.value,
-    });
-    if (status === OK) notify({ type: "success", text: "여행 계획에 추가 되었습니다!" });
-  }
+  const { status } = await addSpotToPlan(selectedPlan.value);
+  if (status === OK) notify({ type: "success", text: "여행 계획에 추가 되었습니다!" });
 };
 
 onMounted(async () => {

@@ -21,7 +21,7 @@ const handleSubmitAddPlan = async () => {
     description: plan.value.description,
   });
   if (status === OK) {
-    notify({ type: "success", text: "새로운 여행 계획을 세워보세요!" });
+    notify({ type: "success", text: "새로운 여행을 위한 계획을 세워보세요!" });
     reload();
   }
 };

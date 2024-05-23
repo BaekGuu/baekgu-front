@@ -33,6 +33,10 @@ const isBoardRoute = computed(() => {
   return route.path.startsWith("/board");
 });
 
+const isSearchRoute = computed(() => {
+  return route.path.startsWith("/detail") || route.path.startsWith("/search");
+});
+
 const isPlanRoute = computed(() => {
   return route.path.startsWith("/plan");
 });
@@ -40,10 +44,7 @@ const isPlanRoute = computed(() => {
 
 <template>
   <AppModal v-if="isOpenModal" :modal-type="modalType" @close-modal="closeModal" />
-  <header
-    class="bg-white"
-    :style="!route.path.includes('/detail') ? 'height: 135px' : 'height: 67px'"
-  >
+  <header class="bg-white">
     <main class="border-bottom">
       <div class="inner">
         <div class="logo" @click="router.push('/')">
@@ -80,10 +81,10 @@ const isPlanRoute = computed(() => {
         </div>
       </div>
     </main>
-    <nav v-if="!route.path.includes('/detail')" class="border-bottom">
+    <nav class="border-bottom">
       <div class="inner">
         <RouterLink to="/" active-class="active" exact>백구는요,</RouterLink>
-        <RouterLink to="/search" active-class="active" exact>여행지 검색</RouterLink>
+        <RouterLink to="/search" :class="{ active: isSearchRoute }">여행지 검색</RouterLink>
         <RouterLink to="/plan" :class="{ active: isPlanRoute }">나의 여행</RouterLink>
         <RouterLink to="/board" :class="{ active: isBoardRoute }">게시판</RouterLink>
       </div>
@@ -97,6 +98,7 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  height: 135px;
   z-index: 10;
 }
 

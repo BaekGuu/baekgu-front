@@ -9,7 +9,7 @@ import { ShoppingBagIcon } from "@heroicons/vue/24/solid";
 import BaseModal from "@/components/BaseModal.vue";
 import { useSpotStore } from "@/stores/spot-store";
 
-const { setSpotDetail,setSpotBarrierFree } = useSpotStore();
+const { setSpotDetail, setSpotBarrierFree } = useSpotStore();
 
 const route = useRoute();
 const isLoading = ref(true);
@@ -229,10 +229,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.page {
-  padding-top: 100px;
-}
-
 .inner {
   padding: 0 20px;
 }
@@ -271,7 +267,6 @@ h1 {
   background-color: #eeeeee;
   border-radius: 10px;
   margin: 2rem 0;
-  font-size: 1.2rem;
 }
 
 .top-menu {

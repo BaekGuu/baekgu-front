@@ -11,16 +11,6 @@ export const getPlanList = async () => {
   }
 };
 
-export const addSpot = async params => {
-  const url = "/place/regist";
-  try {
-    const response = await clientInstance.post(url, params);
-    return response;
-  } catch (error) {
-    return error;
-  }
-};
-
 export const addSpotToPlan = async params => {
   const url = `/plan/place/regist`;
   try {
