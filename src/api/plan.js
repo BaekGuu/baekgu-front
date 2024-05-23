@@ -62,11 +62,11 @@ export const addDateToPlan = async planId => {
   }
 };
 
-export const deleteDateToPlan = async planId => {
-  const url = "/plan/date/regist";
+export const deleteDateToPlan = async dateId => {
+  const url = "/plan/date/delete";
   try {
-    const response = await clientInstance.post(url, { planId: planId });
-
+    const response = await clientInstance.post(url, { id: dateId });
+    console.log(response);
     return response;
   } catch (error) {
     return error;

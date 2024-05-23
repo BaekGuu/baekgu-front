@@ -1,19 +1,19 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { addDateToPlan, deleteDateToPlan, deleteSpotFromPlan, getPlanDetail } from "../../api/plan";
+import { getPlanDetail } from "../../api/plan";
 import { useRoute } from "vue-router";
 import { OK } from "../../constant/status";
 import {
   ChevronDoubleDownIcon,
   ChevronDoubleUpIcon,
   PlusCircleIcon,
-  TrashIcon,
-  XMarkIcon,
+  XCircleIcon,
 } from "@heroicons/vue/24/solid";
 import { CheckCircleIcon } from "@heroicons/vue/24/solid";
 import { useNotification } from "@kyvg/vue3-notification";
 import { KakaoMap, KakaoMapPolyline } from "vue3-kakao-maps";
 import NoImage from "@/assets/img/noimage.png";
+import { usePlanStore } from "@/stores/plan-store";
 
 const latLngList = ref([
   { lat: 33.45, lng: 126.571 },
@@ -22,15 +22,19 @@ const latLngList = ref([
 ]);
 
 const route = useRoute();
+const { handleClickAddDate, handleClickDeleteDate, handleClickDeleteSpot } = usePlanStore();
 const { notify } = useNotification();
 
-const plan = ref({ id: "", title: "", description: "" });
-const plansByDate = ref([]);
+const plan = ref({ memberId: "", id: "", title: "", description: "" });
+const plansByDate = ref({
+  id: [],
+});
 const selectedDay = ref(-1);
 const isOpenMap = ref(false);
 
 const handleClickDay = day => {
-  selectedDay.value = day;
+  if (selectedDay.value === day) selectedDay.value = -1;
+  else selectedDay.value = day;
 };
 
 const handleClickShowMap = () => {
@@ -41,72 +45,63 @@ const handleClickShowMap = () => {
   isOpenMap.value = !isOpenMap.value;
 };
 
-const handleClickAddDate = async id => {
-  const { status } = await addDateToPlan(id);
-  if (status === OK) alert("날짜 추가!");
-};
-
-const handleClickDeleteDate = async id => {
-  const flag = confirm("정말 삭제?");
-  if (!flag) return;
-  const { status } = await deleteDateToPlan(id);
-  if (status === OK) alert("날짜 삭제!");
-};
-
-const handleClickDeleteSpot = async id => {
-  const flag = window.confirm("정말 삭제 하시겠습니까?");
-  if (!flag) return;
-  const { status } = await deleteSpotFromPlan(id);
-  if (status === OK) {
-    notify({ type: "success", text: "여행지가 삭제 되었습니다!" });
-  }
-};
-
 onMounted(async () => {
   const { data, status } = await getPlanDetail(route.path.split("/")[2]);
   if (status === OK) {
-    plan.value.title = data.planTitle;
-    plan.value.description = data.description;
-    plan.value.id = data.id;
-    plansByDate.value = data.planDate;
+    plan.value = {
+      memberId: data.memberId,
+      id: data.id,
+      title: data.planTitle,
+      description: data.description,
+    };
+    plansByDate.value = { ...data.planDate };
   }
-
-  console.log(data);
+  console.log(plansByDate.value);
 });
 </script>
 
 <template>
   <main class="page">
     <div class="inner">
-      <section class="title">
+      <section class="title bg-assistant">
         <h1>{{ plan.title }}</h1>
-        <span>{{ plan.description }}</span>
+        <p>{{ plan.description }}</p>
+        <img src="../../assets/img/baekgu_bark.svg" />
       </section>
 
       <div v-if="plansByDate.length === 0">
         <p>이 계획은 비어있어요😥 여행지를 검색하고, 나만의 계획을 세워 보세요!</p>
         <a href="/search" style="text-decoration: underline">여행지 검색으로 이동</a>
       </div>
+
       <section v-else class="plans">
-        <div v-for="(planDate, index) in plansByDate" :key="index" class="plan">
+        <div v-for="(key, idx) in Object.keys(plansByDate)" :key="key" class="plan">
           <CheckCircleIcon
-            v-if="index === selectedDay"
+            v-if="idx === selectedDay"
             class="check-icon point"
-            @click="handleClickDay(index)"
+            @click="handleClickDay(idx)"
           />
-          <div v-else @click="handleClickDay(index)">
+          <div v-else @click="handleClickDay(idx)">
             <div class="circle"></div>
           </div>
-          <h3>
-            <span>{{ index + 1 }}</span> days
-          </h3>
+          <div class="day">
+            <h3 class="point">
+              <span>{{ idx + 1 }}</span> day
+            </h3>
+            <p
+              @click="() => handleClickDeleteDate(Object.keys(plansByDate)[idx])"
+              class="pointer button"
+            >
+              날짜 삭제하기
+            </p>
+          </div>
           <div class="spots">
-            <div v-for="spot in planDate" :key="spot.contentId" class="spot pointer">
+            <div v-for="spot in plansByDate[key]" :key="spot.contentId" class="spot pointer">
               <img :src="spot.image ? spot.image : NoImage" :alt="spot.title" />
-              <XMarkIcon @click="handleClickDeleteSpot(spot.id)" />
+              <span>{{ spot.title }}</span>
+              <XCircleIcon @click="handleClickDeleteSpot(spot.id)" />
             </div>
           </div>
-          <TrashIcon class="trash-icon" @click="() => handleClickDeleteDate(plan.id)" />
         </div>
 
         <div class="button-container">
@@ -142,17 +137,36 @@ svg {
   cursor: pointer;
 }
 
+.title {
+  text-align: start;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.title h1 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.title img {
+  position: absolute;
+  right: 21%;
+  top: 21%;
+  width: 5rem;
+}
+
 .plan {
   position: relative;
   display: flex;
   align-items: center;
   margin-top: 2rem;
   margin-bottom: 1rem;
-  background-color: #eee;
   border-radius: 15px;
   padding: 0.8rem 1rem;
   padding-left: 0;
   overflow-x: auto;
+  border: 2px solid #7aa2ce;
+  min-height: 180px;
 }
 
 .selected-day {
@@ -161,8 +175,8 @@ svg {
 }
 
 .circle {
-  width: 2rem;
-  height: 2rem;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   border: 1px solid #aaa;
   margin: 0 0.5rem;
@@ -173,22 +187,24 @@ svg {
 }
 
 .check-icon {
-  width: 1.8rem;
+  width: 1.5rem;
+  height: 1.5rem;
   margin: 0 0.5rem;
 }
 
-.trash-icon {
-  width: 20px;
-  position: absolute;
-  top: 8px;
-  right: 8px;
+.plan .day {
+  width: 10%;
+  padding-right: 1rem;
+  text-align: center;
 }
 
 .plan h3 {
-  width: 10%;
   text-align: center;
   white-space: nowrap;
-  padding-right: 1rem;
+}
+
+.plan p {
+  font-size: 1rem;
 }
 
 .spots {
@@ -202,6 +218,13 @@ svg {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.spot span {
+  text-align: center;
 }
 
 .spot img {
@@ -214,10 +237,10 @@ svg {
 }
 
 .spot svg {
-  width: 20px;
+  width: 25px;
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: -10px;
+  right: -10px;
 }
 
 .spot img {
@@ -233,8 +256,8 @@ svg {
 }
 
 .button {
-  text-align: center;
   display: flex;
+  justify-content: center;
 }
 
 .button svg {
