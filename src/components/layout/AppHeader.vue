@@ -44,7 +44,7 @@ const isPlanRoute = computed(() => {
 
 <template>
   <AppModal v-if="isOpenModal" :modal-type="modalType" @close-modal="closeModal" />
-  <header class="bg-white">
+  <header class="bg-white border-bottom">
     <main class="border-bottom">
       <div class="inner">
         <div class="logo" @click="router.push('/')">
@@ -81,7 +81,7 @@ const isPlanRoute = computed(() => {
         </div>
       </div>
     </main>
-    <nav class="border-bottom">
+    <nav>
       <div class="inner">
         <RouterLink to="/" active-class="active" exact>백구는요,</RouterLink>
         <RouterLink to="/search" :class="{ active: isSearchRoute }">여행지 검색</RouterLink>
