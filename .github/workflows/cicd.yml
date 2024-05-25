@@ -2,11 +2,11 @@ name: CI/CD
 
 on:
   push:
-    branches: -main
+    branches: ['main']
   pull_request:
-    branches: -main
+    branches: ['main']
+    
   workflow_dispatch:
-  
 
 jobs:
   cicd:
@@ -14,6 +14,11 @@ jobs:
     steps:
       - name: Git checkout😉
         uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
       - name: Run "✏️ Remove node_modules and Install node packages"
         run: npm ci
       - name: Run "⚒️ Project build"
